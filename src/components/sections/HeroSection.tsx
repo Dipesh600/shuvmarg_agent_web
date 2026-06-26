@@ -128,7 +128,7 @@ export default function HeroSection() {
           className="text-[15px] sm:text-[17px] text-white/80 max-w-3xl mb-8 md:mb-10 leading-relaxed font-medium"
         >
           Nepal&apos;s trusted bus ticketing platform for travel agents.<br className="hidden md:block" />
-          Book tickets for your customers, manage your earnings from a single dashboard, and get regular payouts.
+          Manage your bookings, serve your customers, and grow your business from one dashboard.
         </motion.p>
 
         <motion.div
@@ -179,8 +179,8 @@ export default function HeroSection() {
           {[
             { value: "500+", label: "Bus Routes" },
             { value: "250+", label: "Operators" },
-            { value: "1M+", label: "Travellers" },
-            { value: "Weekly", label: "Payouts" },
+            { value: "10%", label: "Commissions" },
+            { value: "Instant", label: "Payouts" },
           ].map(({ value, label }) => (
             <div key={label} className="flex flex-col items-center md:items-start text-center md:text-left">
               <span

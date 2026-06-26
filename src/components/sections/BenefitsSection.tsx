@@ -20,9 +20,9 @@ const benefits = [
   },
   {
     image: "/images/automated payments.png",
-    title: "High Commissions",
+    title: "Earn Commissions",
     description:
-      "Earn the highest commissions in the market. Settlements are instantly added to your wallet, ensuring seamless cash flow.",
+      "Earn competitive commissions on every ticket you book. Settlements are instantly added to your wallet, ensuring seamless cash flow.",
     delay: 0.3,
   },
 ];
