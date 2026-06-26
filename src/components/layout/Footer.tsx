@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const footerCols = [
   {
@@ -29,9 +32,12 @@ const footerCols = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/register" || pathname === "/login" || pathname === "/forgot-password") return null;
+
   return (
     <>
-      {/* Inline style for footer link hover — keeps Footer a Server Component */}
+      {/* Inline style for footer link hover */}
       <style>{`
         .footer-link {
           color: #666666;
@@ -42,7 +48,7 @@ export default function Footer() {
         }
       `}</style>
 
-      <footer className="bg-[#FDFBEC]">
+      <footer className="bg-[#FEFBF5]">
         <div className="w-full max-w-[1280px] mx-auto px-4 md:px-8 py-12 pb-6">
           {/* Top row */}
           <div

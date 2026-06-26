@@ -5,21 +5,21 @@ import Image from "next/image";
 
 const benefits = [
   {
-    image: "/images/revenue_growth.png", // Reusing the same image placeholders
+    image: "/images/maximum_reach.png",
     title: "Maximum Reach",
     description:
       "Access 500+ bus routes across Nepal from a single dashboard. Book tickets anywhere, anytime for your customers.",
     delay: 0.1,
   },
   {
-    image: "/images/manifest.png",
+    image: "/images/instant_ticket.png",
     title: "Instant Ticketing",
     description:
       "Generate digital tickets instantly. No more calling operators to confirm seat availability—live inventory is at your fingertips.",
     delay: 0.2,
   },
   {
-    image: "/images/automated payments.png",
+    image: "/images/Earn_comission.png",
     title: "Earn Commissions",
     description:
       "Earn competitive commissions on every ticket you book. Settlements are instantly added to your wallet, ensuring seamless cash flow.",
@@ -69,13 +69,12 @@ export default function BenefitsSection() {
             >
               {/* Image Header */}
               <div className="relative w-full h-48 bg-[#FAFAFA] border-b border-neutral-100 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:16px_16px]" />
-                {/* For now we just use a colored placeholder div, or we can use next/image if the image exists in public/images */}
-                <div className="text-[64px] group-hover:scale-[1.1] transition-transform duration-700 ease-out">
-                  {index === 0 && "🚌"}
-                  {index === 1 && "🎫"}
-                  {index === 2 && "💰"}
-                </div>
+                <Image
+                  src={benefit.image}
+                  alt={benefit.title}
+                  fill
+                  className="object-contain p-2 group-hover:scale-[1.08] transition-transform duration-700 ease-out"
+                />
               </div>
 
               {/* Card Body */}

@@ -109,12 +109,12 @@ export default function HeroSection() {
           Book seats. <br className="hidden sm:block" />
           Earn{" "}
           <span className="relative inline-block whitespace-nowrap">
-
+            commissions
             <img
               src="/images/LINE.svg"
               alt=""
               className="absolute left-0 w-full h-auto pointer-events-none z-[-1]"
-              style={{ bottom: "-0.3em" }}
+              style={{ bottom: "-0.6em" }}
             />
           </span>
         </motion.h1>
@@ -125,8 +125,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-[15px] sm:text-[17px] text-white/80 max-w-3xl mb-8 md:mb-10 leading-relaxed font-medium"
         >
-          Nepal&apos;s trusted bus ticketing platform for travel agents.<br className="hidden md:block" />
-          Manage your bookings, serve your customers, and grow your business from one dashboard.
+          Access live seats from operators across Nepal, issue tickets instantly, and earn commission on every successful booking—all from one simple dashboard.
         </motion.p>
 
         <motion.div
