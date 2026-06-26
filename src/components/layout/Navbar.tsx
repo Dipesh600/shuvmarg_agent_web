@@ -204,8 +204,8 @@ export default function Navbar() {
                           className="h-[42px] px-4 sm:px-6 rounded-xl text-[15px] font-bold text-white transition-all flex items-center gap-1.5"
                           style={{ background: "#7A1D1B" }}
                         >
-                          <span className="hidden sm:inline">Request a Call</span>
-                          <span className="sm:hidden">Call</span>
+                          <span className="hidden sm:inline">Get started</span>
+                          <span className="sm:hidden">Start</span>
                         </button>
                       </>
                     )}

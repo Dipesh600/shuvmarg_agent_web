@@ -63,49 +63,59 @@ export default function HeroSection() {
           className="leading-[1.05] tracking-tight mb-4 md:mb-6 text-white"
           style={{
             fontFamily: NM,
-            fontSize: "clamp(36px, 8vw, 82px)",
-            fontWeight: 300,
+            fontSize: "clamp(42px, 8vw, 88px)",
+            fontWeight: 700,
             letterSpacing: "-0.01em",
           }}
         >
-          Book any seat. <br className="hidden sm:block" />
-          <em style={{ fontFamily: NM, fontStyle: "italic", fontWeight: 300, color: "rgba(255,255,255,0.88)" }}>
-            earn instantly.
-          </em>
+          Seats that <br className="hidden sm:block" />
+          pay higher
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[15px] sm:text-lg text-white/80 max-w-3xl mb-8 md:mb-10 leading-relaxed font-medium"
+          className="text-[15px] sm:text-[17px] text-white/80 max-w-3xl mb-8 md:mb-10 leading-relaxed font-medium"
         >
-          Access the largest transport network in Nepal. Book tickets instantly, manage your customers, and earn guaranteed commissions on every single seat.
+          Nepal&apos;s most rewarding bus ticketing platform for travel agents.<br className="hidden md:block" />
+          Earn more on every booking, plus exclusive commissions on add-ons that others don&apos;t offer.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto mb-6"
         >
-          <button
-            className="w-full sm:w-auto h-12 px-8 rounded-full text-[15px] text-white border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-sm"
-            style={{ fontFamily: NM, fontWeight: 300, letterSpacing: "0.02em" }}
-          >
-            Watch Demo
-            <span className="material-symbols-rounded text-[18px]">play_arrow</span>
-          </button>
-
           <Link
             href="/register"
             onClick={handleRegisterClick}
-            className="w-full sm:w-auto h-12 px-8 rounded-full text-[15px] text-white transition-colors flex items-center justify-center gap-2 hover:bg-[#9A2622]"
-            style={{ background: "#7A1D1B", fontFamily: NM, fontWeight: 300, letterSpacing: "0.02em" }}
+            className="w-full sm:w-auto h-12 sm:h-[52px] px-8 sm:px-10 rounded-xl sm:rounded-full text-[15px] text-neutral-900 bg-white hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 font-semibold"
           >
-            {userLoggedIn ? "Go to Dashboard" : "Become an Agent"}
+            {userLoggedIn ? "Go to Dashboard" : "Start earning"}
             <span className="material-symbols-rounded text-[18px]">arrow_forward</span>
           </Link>
+
+          <button
+            className="w-full sm:w-auto h-12 sm:h-[52px] px-8 sm:px-10 rounded-xl sm:rounded-full text-[15px] text-white border border-white/20 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-md bg-black/20"
+          >
+            <span className="material-symbols-rounded text-[20px]">play_arrow</span>
+            Watch tutorial
+          </button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="text-[13px] text-white/60 font-medium tracking-wide flex items-center gap-2 justify-center flex-wrap"
+        >
+          <span>Free to join</span>
+          <span className="w-1 h-1 rounded-full bg-white/30" />
+          <span>No setup fees</span>
+          <span className="w-1 h-1 rounded-full bg-white/30" />
+          <span>Start earning in minutes</span>
         </motion.div>
       </div>
 
