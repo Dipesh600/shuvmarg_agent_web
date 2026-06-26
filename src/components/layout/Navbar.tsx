@@ -7,16 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useOnboardingStore } from "@/lib/store";
 import { isLoggedIn } from "@/lib/auth";
 
-const DISTRICTS = [
-  "Achham", "Arghakhanchi", "Baglung", "Baitadi", "Bajhang", "Bajura", "Banke", "Bara", "Bardiya", "Bhaktapur",
-  "Bhojpur", "Chitwan", "Dadeldhura", "Dailekh", "Dang", "Darchula", "Dhading", "Dhankuta", "Dhanusha", "Dolakha",
-  "Dolpa", "Doti", "Eastern Rukum", "Gorkha", "Gulmi", "Humla", "Ilam", "Jajarkot", "Jhapa", "Jumla", "Kailali",
-  "Kalikot", "Kanchanpur", "Kapilvastu", "Kaski", "Kathmandu", "Kavrepalanchok", "Khotang", "Lalitpur", "Lamjung",
-  "Mahottari", "Makwanpur", "Manang", "Morang", "Mugu", "Mustang", "Myagdi", "Nawalpur", "Nuwakot", "Okhaldhunga",
-  "Palpa", "Panchthar", "Parasi", "Parbat", "Parsa", "Pyuthan", "Ramechhap", "Rasuwa", "Rautahat", "Rolpa",
-  "Rukum Paschim", "Rupandehi", "Salyan", "Sankhuwasabha", "Saptari", "Sarlahi", "Sindhuli", "Sindhupalchok",
-  "Siraha", "Solukhumbu", "Sunsari", "Surkhet", "Syangja", "Tanahun", "Taplejung", "Terhathum", "Udayapur",
-];
 
 const dashboardNavItems = [
   { label: "Overview", href: "/dashboard", icon: "dashboard" },
@@ -28,19 +18,9 @@ const dashboardNavItems = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  // Modal form fields
-  const [modalName, setModalName] = useState("");
-  const [modalPhone, setModalPhone] = useState("");
-  const [modalSubmitting, setModalSubmitting] = useState(false);
-  const [modalError, setModalError] = useState("");
 
   const pathname = usePathname();
   const { onboardingStep, onboardingTitle } = useOnboardingStore();
@@ -199,14 +179,14 @@ export default function Navbar() {
                           Sign in
                         </Link>
                         {/* Become a Partner — truncated label on xs */}
-                        <button
-                          onClick={() => setIsModalOpen(true)}
+                        <Link
+                          href="/register"
                           className="h-[42px] px-4 sm:px-6 rounded-xl text-[15px] font-bold text-white transition-all flex items-center gap-1.5"
                           style={{ background: "#7A1D1B" }}
                         >
                           <span className="hidden sm:inline">Get started</span>
                           <span className="sm:hidden">Start</span>
-                        </button>
+                        </Link>
                       </>
                     )}
                   </motion.div>
@@ -295,271 +275,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </div>
-
-      {/* ── "Get a Callback" Modal ─────────────────────────────── */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4"
-            style={{ background: "rgba(0,0,0,0.45)" }}
-            onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}
-          >
-            <motion.div
-              drag="y"
-              dragConstraints={{ top: -250, bottom: 0 }}
-              dragElastic={{ top: 0.2, bottom: 0.8 }}
-              onDragEnd={(e, info) => {
-                if (info.offset.y > 100 || info.velocity.y > 500) {
-                  setIsModalOpen(false);
-                  setIsSubmitted(false);
-                  setModalName("");
-                  setModalPhone("");
-                  setSelectedDistrict("");
-                  setSearchQuery("");
-                  setModalError("");
-                }
-              }}
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 40, opacity: 0 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full sm:max-w-[440px] bg-white sm:rounded-2xl rounded-t-2xl border border-neutral-200 shadow-xl relative"
-            >
-              {/* Drag handle on mobile */}
-              <div className="flex justify-center pt-3 sm:hidden">
-                <div className="w-10 h-1 rounded-full bg-neutral-200" />
-              </div>
-
-              <div className="p-6">
-                {/* Close */}
-                <button
-                  onClick={() => {
-                    setIsModalOpen(false);
-                    setIsSubmitted(false);
-                    setModalName("");
-                    setModalPhone("");
-                    setSelectedDistrict("");
-                    setSearchQuery("");
-                    setModalError("");
-                  }}
-                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-neutral-100 transition-colors"
-                >
-                  <span className="material-symbols-rounded text-neutral-500 text-[18px]">close</span>
-                </button>
-
-                <AnimatePresence mode="wait">
-                  {!isSubmitted ? (
-                    <motion.div
-                      key="form"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <div className="mb-5">
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#C99A4A" }} />
-                          <span className="text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: "#7A1D1B" }}>
-                            Request Callback
-                          </span>
-                        </div>
-                        <h3 className="text-[20px] font-bold text-neutral-900 leading-tight">
-                          Talk to our partner team
-                        </h3>
-                        <p className="text-[13px] text-neutral-500 mt-1">
-                          Leave your details and we&apos;ll call within 2 hours.
-                        </p>
-                      </div>
-
-                      <form
-                        className="space-y-4"
-                        onSubmit={async (e) => {
-                          e.preventDefault();
-                          if (!modalName.trim() || !modalPhone || !selectedDistrict) return;
-                          setModalError("");
-                          setModalSubmitting(true);
-                          try {
-                            const res = await fetch(
-                              `${process.env.NEXT_PUBLIC_API_URL}/public/partner-leads`,
-                              {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({
-                                  fullName: modalName.trim(),
-                                  phone: modalPhone,
-                                  district: selectedDistrict,
-                                  leadType: "contact_form",
-                                }),
-                              }
-                            );
-                            const data = await res.json();
-                            if (!res.ok) {
-                              setModalError(data.message || "Something went wrong. Please try again.");
-                            } else {
-                              setIsSubmitted(true);
-                            }
-                          } catch {
-                            setModalError("Network error. Please try again.");
-                          } finally {
-                            setModalSubmitting(false);
-                          }
-                        }}
-                      >
-                        <div>
-                          <label className="form-label">Full Name <span style={{ color: "#7A1D1B" }}>*</span></label>
-                          <input type="text" required placeholder="e.g. Ram Bahadur Shrestha" className="form-input" value={modalName} onChange={(e) => setModalName(e.target.value)} />
-                        </div>
-
-                        {/* Fixed phone field — no emoji */}
-                        <div>
-                          <label className="form-label">Phone Number <span style={{ color: "#7A1D1B" }}>*</span></label>
-                          <div
-                            className="flex overflow-hidden"
-                            style={{ border: "1.5px solid #DDDDDD", borderRadius: 10 }}
-                          >
-                            <div
-                              className="flex items-center gap-1 px-3 flex-shrink-0 select-none"
-                              style={{ borderRight: "1.5px solid #EEEEEE", background: "#FAFAFA", minWidth: 72 }}
-                            >
-                              <span className="text-[13px] font-bold" style={{ color: "#444" }}>NP</span>
-                              <span className="text-[12px]" style={{ color: "#AAAAAA" }}>+977</span>
-                            </div>
-                            <input
-                              type="tel"
-                              required
-                              placeholder="98XXXXXXXX"
-                              maxLength={10}
-                              className="flex-1 h-[44px] px-3 text-[14px] outline-none bg-transparent"
-                              style={{ color: "#111" }}
-                              value={modalPhone}
-                              onChange={(e) => setModalPhone(e.target.value.replace(/\D/g, ""))}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="form-label">District <span style={{ color: "#7A1D1B" }}>*</span></label>
-                          <div className="relative">
-                            <div
-                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                              className="form-input flex items-center justify-between cursor-pointer select-none"
-                            >
-                              <span className={selectedDistrict ? "text-neutral-900" : "text-neutral-400"}>
-                                {selectedDistrict || "Select your district"}
-                              </span>
-                              <span className={`material-symbols-rounded text-neutral-500 text-[18px] transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}>
-                                expand_more
-                              </span>
-                            </div>
-
-                            <AnimatePresence>
-                              {isDropdownOpen && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -4 }}
-                                  transition={{ duration: 0.12 }}
-                                  className="absolute bottom-full mb-1 sm:bottom-auto sm:top-full sm:mb-0 sm:mt-1 left-0 w-full bg-white border border-neutral-200 rounded-xl shadow-lg overflow-hidden z-50"
-                                >
-                                  <div className="p-2 border-b border-neutral-100">
-                                    <div className="relative">
-                                      <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-neutral-400 text-[15px]">search</span>
-                                      <input
-                                        type="text"
-                                        autoFocus
-                                        placeholder="Search district..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full h-8 pl-8 pr-3 text-[13px] border border-neutral-200 rounded-lg outline-none focus:border-maroon text-neutral-900"
-                                      />
-                                    </div>
-                                  </div>
-                                  <ul className="max-h-[180px] overflow-y-auto py-1">
-                                    {DISTRICTS.filter((d) =>
-                                      d.toLowerCase().includes(searchQuery.toLowerCase())
-                                    ).length > 0 ? (
-                                      DISTRICTS.filter((d) =>
-                                        d.toLowerCase().includes(searchQuery.toLowerCase())
-                                      ).map((d) => (
-                                        <li
-                                          key={d}
-                                          onClick={() => { setSelectedDistrict(d); setIsDropdownOpen(false); setSearchQuery(""); }}
-                                          className={`px-4 py-2 text-[13px] cursor-pointer transition-colors ${selectedDistrict === d
-                                            ? "bg-[rgba(122,29,27,0.08)] text-maroon font-semibold"
-                                            : "text-neutral-700 hover:bg-neutral-50"
-                                            }`}
-                                        >
-                                          {d}
-                                        </li>
-                                      ))
-                                    ) : (
-                                      <li className="px-4 py-3 text-[13px] text-center text-neutral-400">
-                                        No districts found
-                                      </li>
-                                    )}
-                                  </ul>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        </div>
-
-                        {modalError && (
-                          <p className="text-[12px] text-center" style={{ color: "#D32F2F" }}>{modalError}</p>
-                        )}
-
-                        <button
-                          type="submit"
-                          disabled={modalSubmitting || !modalName.trim() || modalPhone.length < 10 || !selectedDistrict}
-                          className="w-full h-[44px] rounded-[10px] font-semibold text-[14px] text-white mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
-                          style={{ background: "#7A1D1B" }}
-                        >
-                          {modalSubmitting ? "Submitting..." : "Request Callback"}
-                        </button>
-                      </form>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="success"
-                      initial={{ opacity: 0, scale: 0.97 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="flex flex-col items-center text-center py-6"
-                    >
-                      <div
-                        className="w-14 h-14 rounded-full flex items-center justify-center mb-4"
-                        style={{ background: "rgba(122,29,27,0.08)" }}
-                      >
-                        <span className="material-symbols-rounded text-maroon text-[32px]">check_circle</span>
-                      </div>
-                      <h3 className="text-[18px] font-bold text-neutral-900 mb-1.5">Request Received</h3>
-                      <p className="text-[13px] text-neutral-500 leading-relaxed mb-6 max-w-xs">
-                        Our partner team will call you back within 2 business hours.
-                      </p>
-                      <button
-                        onClick={() => {
-                          setIsModalOpen(false);
-                          setIsSubmitted(false);
-                          setModalName("");
-                          setModalPhone("");
-                          setSelectedDistrict("");
-                          setSearchQuery("");
-                          setModalError("");
-                        }}
-                        className="w-full h-[44px] rounded-[10px] font-semibold text-[14px] text-white"
-                        style={{ background: "#7A1D1B" }}
-                      >
-                        Done
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
