@@ -108,10 +108,10 @@ export default function HeroSection() {
             letterSpacing: "-0.01em",
           }}
         >
-          Seats that <br className="hidden sm:block" />
-          pay{" "}
+          Book seats. <br className="hidden sm:block" />
+          Earn{" "}
           <span className="relative inline-block whitespace-nowrap">
-            higher
+            commissions
             <img
               src="/images/LINE.svg"
               alt=""
@@ -127,8 +127,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-[15px] sm:text-[17px] text-white/80 max-w-3xl mb-8 md:mb-10 leading-relaxed font-medium"
         >
-          Nepal&apos;s most rewarding bus ticketing platform for travel agents.<br className="hidden md:block" />
-          Earn more on every booking, plus exclusive commissions on add-ons that others don&apos;t offer.
+          Nepal&apos;s trusted bus ticketing platform for travel agents.<br className="hidden md:block" />
+          Book tickets for your customers, manage your earnings from a single dashboard, and get regular payouts.
         </motion.p>
 
         <motion.div
@@ -179,8 +179,8 @@ export default function HeroSection() {
           {[
             { value: "500+", label: "Bus Routes" },
             { value: "250+", label: "Operators" },
-            { value: "10%", label: "Commissions" },
-            { value: "Instant", label: "Payouts" },
+            { value: "1M+", label: "Travellers" },
+            { value: "Weekly", label: "Payouts" },
           ].map(({ value, label }) => (
             <div key={label} className="flex flex-col items-center md:items-start text-center md:text-left">
               <span
