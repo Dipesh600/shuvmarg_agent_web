@@ -10,7 +10,7 @@ const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
 export default function HeroSection() {
   const router = useRouter();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  
+
   // For seamless video loop
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
@@ -20,7 +20,7 @@ export default function HeroSection() {
     setUserLoggedIn(isLoggedIn());
     // Autoplay the first video on mount
     if (video1Ref.current) {
-      video1Ref.current.play().catch(() => {});
+      video1Ref.current.play().catch(() => { });
     }
   }, []);
 
@@ -29,15 +29,15 @@ export default function HeroSection() {
     if (!video.duration) return;
 
     const timeRemaining = video.duration - video.currentTime;
-    
+
     // Crossfade 0.8 seconds before the video ends
     if (timeRemaining > 0 && timeRemaining <= 0.8 && activeVideo === id) {
       const nextId = id === 1 ? 2 : 1;
       const nextVideo = nextId === 1 ? video1Ref.current : video2Ref.current;
-      
+
       if (nextVideo) {
         nextVideo.currentTime = 0;
-        nextVideo.play().catch(() => {});
+        nextVideo.play().catch(() => { });
         setActiveVideo(nextId);
       }
     }
@@ -62,9 +62,8 @@ export default function HeroSection() {
           muted
           playsInline
           onTimeUpdate={(e) => handleTimeUpdate(e, 1)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ${
-            activeVideo === 1 ? "opacity-90" : "opacity-0"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ${activeVideo === 1 ? "opacity-90" : "opacity-0"
+            }`}
         />
         <video
           ref={video2Ref}
@@ -72,9 +71,8 @@ export default function HeroSection() {
           muted
           playsInline
           onTimeUpdate={(e) => handleTimeUpdate(e, 2)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ${
-            activeVideo === 2 ? "opacity-90" : "opacity-0"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[800ms] ${activeVideo === 2 ? "opacity-90" : "opacity-0"
+            }`}
         />
         {/* Deep, rich overlay matching the design */}
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -111,7 +109,7 @@ export default function HeroSection() {
           Book seats. <br className="hidden sm:block" />
           Earn{" "}
           <span className="relative inline-block whitespace-nowrap">
-            commissions
+
             <img
               src="/images/LINE.svg"
               alt=""
@@ -216,8 +214,8 @@ export default function HeroSection() {
           style={{ display: "block" }}
         >
           <path
-             d="M0,40 C480,140 960,-40 1440,60 L1440,120 L0,120 Z"
-             fill="#FDFAF6"
+            d="M0,40 C480,140 960,-40 1440,60 L1440,120 L0,120 Z"
+            fill="#FDFAF6"
           />
         </svg>
       </div>
