@@ -72,29 +72,12 @@ export default function HeroSection() {
           pay{" "}
           <span className="relative inline-block whitespace-nowrap">
             higher
-            <svg
-              className="absolute left-0 w-full h-auto text-[#E46B60] pointer-events-none z-[-1]"
-              style={{ bottom: "-0.2em" }}
-              viewBox="0 0 100 30"
-              preserveAspectRatio="none"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2,18 C25,12 65,10 98,15"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M15,25 C45,18 75,18 92,23"
-                stroke="currentColor"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src="/images/LINE.svg"
+              alt=""
+              className="absolute left-0 w-full h-auto pointer-events-none z-[-1]"
+              style={{ bottom: "-0.3em" }}
+            />
           </span>
         </motion.h1>
 
