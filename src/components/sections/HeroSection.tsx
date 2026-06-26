@@ -129,7 +129,7 @@ export default function HeroSection() {
       </div>
 
       {/* Stats Row - Now in normal document flow instead of absolute positioning */}
-      <div className="relative z-20 w-full pb-[calc(60px+32px)] md:pb-[calc(100px+48px)] lg:pb-[calc(120px+48px)] pt-12 md:pt-32 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none">
+      <div className="relative z-20 w-full pb-[calc(60px+64px)] md:pb-[calc(100px+96px)] lg:pb-[calc(120px+96px)] pt-8 md:pt-24 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
