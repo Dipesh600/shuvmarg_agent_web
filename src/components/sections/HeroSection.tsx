@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { isLoggedIn } from "@/lib/auth";
+import { MoveRight } from "lucide-react";
+import { FaPlay } from "react-icons/fa";
 const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
 
 export default function HeroSection() {
@@ -113,8 +115,8 @@ export default function HeroSection() {
             <img
               src="/images/LINE.svg"
               alt=""
-              className="absolute left-0 w-full h-auto pointer-events-none z-[-1]"
-              style={{ bottom: "-0.6em" }}
+              className="absolute left-0 right-0 mx-auto w-[85%] h-auto pointer-events-none z-[-1] opacity-90 scale-y-75"
+              style={{ bottom: "-0.4em" }}
             />
           </span>
         </motion.h1>
@@ -140,14 +142,14 @@ export default function HeroSection() {
             className="w-full sm:w-auto h-12 sm:h-[52px] px-8 sm:px-10 rounded-xl sm:rounded-full text-[15px] text-neutral-900 bg-white hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 font-semibold"
           >
             {userLoggedIn ? "Go to Dashboard" : "Start earning"}
-            <span className="material-symbols-rounded text-[18px]">arrow_forward</span>
+            <MoveRight className="w-5 h-5" strokeWidth={2} />
           </Link>
 
           <button
             className="w-full sm:w-auto h-12 sm:h-[52px] px-8 sm:px-10 rounded-xl sm:rounded-full text-[15px] text-white border border-white/20 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-md bg-black/20"
           >
-            <span className="material-symbols-rounded text-[20px]">play_arrow</span>
             Watch tutorial
+            <FaPlay className="w-[16px] h-[16px]" />
           </button>
         </motion.div>
 
@@ -214,7 +216,7 @@ export default function HeroSection() {
         >
           <path
             d="M0,40 C480,140 960,-40 1440,60 L1440,120 L0,120 Z"
-            fill="#FDFAF6"
+            fill="#FAFAFA"
           />
         </svg>
       </div>

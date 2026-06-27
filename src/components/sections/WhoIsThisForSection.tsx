@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Building2, Store, Hotel, UserCheck, Check, ArrowRight } from "lucide-react";
+import { Building2, Store, Hotel, UserCheck, Check, MoveRight } from "lucide-react";
 import Link from "next/link";
 
 const audiences = [
@@ -76,7 +76,7 @@ export default function WhoIsThisForSection() {
   };
 
   return (
-    <section className="py-24 relative bg-white overflow-hidden">
+    <section className="py-24 relative bg-[#FAFAFA] overflow-hidden">
       <style>
         {`
           @keyframes slideUpFade {
@@ -179,7 +179,7 @@ export default function WhoIsThisForSection() {
                         onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center justify-center gap-2 h-12 bg-[#7A1D1B] text-white rounded-xl font-semibold text-[15px] hover:bg-[#5C1414] transition-colors shadow-sm self-start px-6 mt-auto"
                       >
-                        Learn More <ArrowRight className="w-4 h-4" />
+                        Learn More <MoveRight className="w-4 h-4" />
                       </Link>
                    </div>
                 </div>
@@ -308,7 +308,7 @@ export default function WhoIsThisForSection() {
                      onClick={(e) => e.stopPropagation()}
                      className="inline-flex items-center justify-center gap-2 h-11 w-full bg-[#7A1D1B] text-white rounded-xl font-semibold text-[14px] hover:bg-[#5C1414] transition-colors shadow-sm mt-auto"
                    >
-                     Learn More <ArrowRight className="w-4 h-4" />
+                     Learn More <MoveRight className="w-4 h-4" />
                    </Link>
                 </div>
 

@@ -25,19 +25,19 @@ export const partnersData: Record<string, PartnerData> = {
     hero: {
       title: "Grow your travel agency with bus ticket booking.",
       subtitle: "Sell tickets from hundreds of routes, serve more customers, and earn commission from every booking.",
-      image: "/images/travel_agency.png",
+      image: "/images/travel_page.png",
     },
     whoIsThisFor: "Built for agencies that already sell flights, tours, hotels, visas, or travel services and want to expand their offerings without additional investment.",
     benefits: [
       {
         title: "More services",
         description: "Offer bus tickets alongside flights and tours.",
-        icon: "Briefcase",
+        icon: "Map",
       },
       {
         title: "More revenue",
         description: "Earn commission from every ticket sold.",
-        icon: "TrendingUp",
+        icon: "Banknote",
       },
       {
         title: "Faster bookings",
@@ -57,14 +57,14 @@ export const partnersData: Record<string, PartnerData> = {
     hero: {
       title: "Your phone shop can become a ticket center.",
       subtitle: "Extra income with no extra inventory. Sell tickets alongside recharge and accessories. Start in minutes.",
-      image: "/images/Mobile_shop.png",
+      image: "/images/mobile_page.png",
     },
     whoIsThisFor: "Perfect for neighborhood mobile and retail shops looking to turn daily foot traffic into a steady source of extra income.",
     benefits: [
       {
         title: "Extra income",
         description: "Earn extra income with no extra inventory.",
-        icon: "Wallet",
+        icon: "Coins",
       },
       {
         title: "Capitalize on traffic",
@@ -74,12 +74,12 @@ export const partnersData: Record<string, PartnerData> = {
       {
         title: "Easy bundling",
         description: "Sell tickets alongside recharge and accessories.",
-        icon: "Briefcase",
+        icon: "Package",
       },
       {
         title: "Quick start",
         description: "Start in minutes with zero complicated setup.",
-        icon: "Zap",
+        icon: "Rocket",
       },
     ],
   },
@@ -89,19 +89,19 @@ export const partnersData: Record<string, PartnerData> = {
     hero: {
       title: "Help guests continue their journey.",
       subtitle: "Improve guest experience and earn additional revenue with no complicated setup.",
-      image: "/images/hotel.png",
+      image: "/images/hote_page.png",
     },
     whoIsThisFor: "Designed for hospitality businesses that want to provide end-to-end travel convenience for their guests while generating extra revenue.",
     benefits: [
       {
         title: "Seamless travel",
         description: "Help guests continue their journey easily.",
-        icon: "Globe",
+        icon: "MapPin",
       },
       {
         title: "Better experience",
         description: "Improve guest experience with instant ticketing.",
-        icon: "Smile",
+        icon: "Star",
       },
       {
         title: "New revenue stream",
@@ -111,7 +111,7 @@ export const partnersData: Record<string, PartnerData> = {
       {
         title: "Zero hassle",
         description: "No complicated setup required.",
-        icon: "Target",
+        icon: "CheckCircle",
       },
     ],
   },
@@ -121,19 +121,19 @@ export const partnersData: Record<string, PartnerData> = {
     hero: {
       title: "Start your own ticket booking business.",
       subtitle: "Work from anywhere. You don't need to own a travel agency to become a travel agent.",
-      image: "/images/independent.png",
+      image: "/images/indivisual_page.png",
     },
     whoIsThisFor: "Ideal for students, freelancers, stay-at-home parents, entrepreneurs, and anyone looking for extra income.",
     benefits: [
       {
         title: "Work from anywhere",
         description: "No physical shop required.",
-        icon: "Globe",
+        icon: "Laptop",
       },
       {
         title: "Build a network",
         description: "Build your own customer network.",
-        icon: "Users",
+        icon: "Network",
       },
       {
         title: "Earn per booking",

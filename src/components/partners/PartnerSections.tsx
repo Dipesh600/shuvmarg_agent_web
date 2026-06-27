@@ -3,67 +3,90 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { PartnerData } from "@/data/partners";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { MoveRight, CheckCircle2 } from "lucide-react";
 import * as Icons from "lucide-react";
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import FAQItem from "@/components/ui/FAQItem";
 
 const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
 
 export function PartnerHero({ data }: { data: PartnerData }) {
   return (
-    <section className="relative w-full min-h-[70vh] flex items-center bg-[#FDF4F4] overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#F8E7E7] rounded-full blur-[100px] transform translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#F8E7E7] rounded-full blur-[80px] transform -translate-x-1/4 translate-y-1/4" />
-      </div>
-
+    <section className="relative w-full min-h-[70vh] flex items-center bg-white overflow-hidden pt-28 md:pt-32 pb-8 md:pb-12">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
+            className="flex flex-col"
           >
-            <div className="inline-block mb-4 px-3 py-1 rounded-full bg-[#7A1D1B]/10 text-[#7A1D1B] text-sm font-semibold tracking-wide">
-              {data.type}
-            </div>
-            <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#171717] leading-[1.1] mb-6 tracking-tight"
+
+            <h1
+              className="text-4xl md:text-5xl lg:text-[4rem] font-bold text-[#111111] leading-[1.05] mb-6 tracking-tight"
               style={{ fontFamily: NM }}
             >
               {data.hero.title}
             </h1>
-            <p className="text-lg md:text-xl text-[#525252] mb-10 max-w-lg leading-relaxed font-medium">
+            <p className="text-lg md:text-xl text-[#525252] mb-10 max-w-xl leading-[1.6] font-medium">
               {data.hero.subtitle}
             </p>
-            <Link
-              href="/register"
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 bg-[#7A1D1B] text-white rounded-xl font-semibold text-[16px] hover:bg-[#641715] transition-colors shadow-lg shadow-[#7A1D1B]/20 w-full sm:w-auto"
-            >
-              Become a Partner <ArrowRight className="w-5 h-5" />
-            </Link>
+            {/* Mobile Image */}
+            <div className="block lg:hidden relative w-full mb-10">
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src={data.hero.image}
+                  alt={data.type}
+                  fill
+                  className="object-contain scale-110 -rotate-2"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <Link
+                href="/register"
+                className="inline-flex items-center justify-center gap-2 h-14 px-8 bg-[#7A1D1B] text-white rounded-xl font-semibold text-[16px] hover:bg-[#5C1414] transition-all shadow-lg shadow-[#7A1D1B]/20 w-full sm:w-auto hover:shadow-xl hover:-translate-y-0.5"
+              >
+                Become a Partner <MoveRight className="w-5 h-5" />
+              </Link>
+            </div>
+
+            <div className="mt-8 flex items-center flex-wrap gap-4 sm:gap-6 text-sm font-medium text-[#525252]">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#2E7D32]" />
+                <span>Zero setup fee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#2E7D32]" />
+                <span>Instant commission</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#2E7D32]" />
+                <span>24/7 Support</span>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
+            className="relative w-full hidden lg:block"
           >
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/20">
-              <Image 
-                src={data.hero.image} 
-                alt={data.type} 
-                fill 
-                className="object-cover"
+            <div className="relative aspect-[4/3]">
+              <Image
+                src={data.hero.image}
+                alt={data.type}
+                fill
+                className="object-contain scale-110 -rotate-2"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
             </div>
-            {/* Decorative element */}
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#F8CA69] rounded-2xl -z-10 rotate-12" />
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-[#CD7272]/20 rounded-full -z-10 blur-xl" />
           </motion.div>
         </div>
       </div>
@@ -73,7 +96,7 @@ export function PartnerHero({ data }: { data: PartnerData }) {
 
 export function PartnerWhoIsThisFor({ data }: { data: PartnerData }) {
   return (
-    <section className="py-20 md:py-24 bg-white">
+    <section className="pt-8 lg:pt-12 pb-12 lg:pb-16 bg-white relative z-20">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -81,13 +104,13 @@ export function PartnerWhoIsThisFor({ data }: { data: PartnerData }) {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto"
         >
-          <h2 
-            className="text-3xl md:text-4xl font-bold text-[#171717] mb-6"
+          <h2
+            className="text-3xl md:text-4xl font-bold text-[#111111] mb-6 tracking-tight"
             style={{ fontFamily: NM }}
           >
-            Who is this for?
+            Is {data.type} the right fit for you?
           </h2>
-          <p className="text-xl text-[#525252] leading-relaxed font-medium">
+          <p className="text-lg md:text-xl text-[#666666] leading-relaxed max-w-2xl mx-auto">
             {data.whoIsThisFor}
           </p>
         </motion.div>
@@ -98,37 +121,59 @@ export function PartnerWhoIsThisFor({ data }: { data: PartnerData }) {
 
 export function PartnerBenefits({ data }: { data: PartnerData }) {
   return (
-    <section className="py-20 md:py-24 bg-[#FAF7F2]">
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8">
-        <div className="text-center mb-16 md:mb-20">
-          <h2 
-            className="text-3xl md:text-4xl font-bold text-[#171717] mb-6"
-            style={{ fontFamily: NM }}
-          >
-            Why {data.type.toLowerCase()} choose ShuvMarg
-          </h2>
+    <section className="py-10 lg:py-16 bg-[#FAFAFA] relative overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10 lg:mb-12">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+              <span className="text-[12px] font-medium tracking-wide text-[#7A1D1B] uppercase">
+                Why Choose Us
+              </span>
+              <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+            </div>
+            <h2
+              className="font-bold text-[#111111] tracking-tight leading-[1.15]"
+              style={{ fontSize: "clamp(32px, 4vw, 44px)" }}
+            >
+              Why {data.type.toLowerCase()} <br />
+              choose Shuv Marg
+            </h2>
+          </div>
+          <div className="max-w-sm pb-2">
+            <p className="text-[16px] text-[#666666] leading-relaxed">
+              We provide the tools and network you need to grow your business, serve more customers, and maximize your earnings seamlessly.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* 2x2 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {data.benefits.map((benefit, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-[#E8DDCC]"
+              transition={{ delay: idx * 0.1, duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+              className="flex items-start gap-5 p-8 bg-white rounded-[24px] border border-neutral-100 hover:border-neutral-200 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-300"
             >
-              <div className="w-14 h-14 bg-[#F8E7E7] rounded-2xl flex items-center justify-center mb-6 text-[#7A1D1B]">
+              <div className="w-14 h-14 shrink-0 bg-[#FAFAFA] border border-neutral-100 rounded-2xl flex items-center justify-center text-[#7A1D1B]">
                 {(() => {
                   const Icon = Icons[benefit.icon as keyof typeof Icons] as React.ElementType;
-                  return Icon ? <Icon strokeWidth={1.5} className="w-7 h-7" /> : null;
+                  return Icon ? <Icon strokeWidth={1.5} className="w-6 h-6" /> : null;
                 })()}
               </div>
-              <h3 className="text-xl font-bold text-[#171717] mb-3">{benefit.title}</h3>
-              <p className="text-[#525252] leading-relaxed">
-                {benefit.description}
-              </p>
+
+              <div>
+                <h3 className="font-bold text-[#111111] text-[18px] md:text-[20px] mb-2">
+                  {benefit.title}
+                </h3>
+                <p className="text-[15px] text-[#666666] leading-relaxed">
+                  {benefit.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -140,38 +185,57 @@ export function PartnerBenefits({ data }: { data: PartnerData }) {
 export function PartnerRequirements() {
   const requirements = [
     "Business registration (optional depending on policy)",
-    "Internet connection",
-    "Smartphone or computer",
-    "Bank account",
-    "Basic customer handling"
+    "Internet connection (WiFi or mobile data)",
+    "Smartphone, tablet or computer",
+    "Bank account for settlements",
+    "Basic customer handling skills"
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-white">
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8">
-        <div className="max-w-3xl mx-auto bg-[#FDF4F4] rounded-3xl p-10 md:p-14 border border-[#F8E7E7]">
-          <h2 
-            className="text-3xl font-bold text-[#171717] mb-8 text-center"
-            style={{ fontFamily: NM }}
-          >
-            What you need
-          </h2>
-          <div className="space-y-4">
-            {requirements.map((req, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-start gap-4"
-              >
-                <div className="mt-0.5">
-                  <CheckCircle2 className="w-6 h-6 text-[#7A1D1B]" />
-                </div>
-                <span className="text-lg text-[#404040] font-medium">{req}</span>
-              </motion.div>
-            ))}
+    <section className="py-10 lg:py-16 bg-white border-t border-neutral-100 relative overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col md:flex-row gap-10 lg:gap-16 items-center bg-[#FAFAFA] rounded-[32px] p-8 md:p-12 lg:p-16 border border-neutral-100 relative overflow-hidden">
+          {/* Subtle background decoration */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#FDF4F4] to-transparent rounded-bl-full opacity-60 pointer-events-none" />
+
+          <div className="flex-1 relative z-10">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+              <span className="text-[12px] font-medium tracking-wide text-[#7A1D1B] uppercase">
+                Requirements
+              </span>
+            </div>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-[#111111] mb-6 tracking-tight leading-[1.15]"
+              style={{ fontFamily: NM }}
+            >
+              Everything you need <br className="hidden lg:block" /> to start earning
+            </h2>
+            <p className="text-[16px] text-[#666666] leading-relaxed max-w-md">
+              Getting started as a Shuv Marg partner is incredibly simple. You don't need complex infrastructure or high capital to start your ticket booking business.
+            </p>
+          </div>
+
+          <div className="flex-1 w-full max-w-lg relative z-10">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-neutral-200 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+              <div className="space-y-5">
+                {requirements.map((req, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="mt-0.5 shrink-0 bg-[#FDF4F4] w-6 h-6 rounded-full flex items-center justify-center text-[#7A1D1B]">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span className="text-[15px] text-[#404040] leading-relaxed font-medium">{req}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -181,40 +245,51 @@ export function PartnerRequirements() {
 
 export function PartnerHowItWorks() {
   const steps = [
-    { title: "Register", desc: "Sign up in 2 minutes" },
-    { title: "Get Approved", desc: "Quick verification" },
-    { title: "Start Booking", desc: "Access live inventory" },
-    { title: "Earn Commission", desc: "Get paid automatically" }
+    { title: "Register", desc: "Sign up and complete your profile in minutes." },
+    { title: "Get Approved", desc: "Fast verification by our dedicated team." },
+    { title: "Start Booking", desc: "Access live inventory and book tickets instantly." },
+    { title: "Earn Commission", desc: "Get paid automatically into your wallet." }
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-[#FAFAFA]">
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center">
-        <h2 
-          className="text-3xl md:text-4xl font-bold text-[#171717] mb-16"
-          style={{ fontFamily: NM }}
-        >
-          How it works
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+    <section className="py-10 lg:py-16 bg-[#FAFAFA] relative overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+            <span className="text-[12px] font-medium tracking-wide text-[#7A1D1B] uppercase">
+              How it works
+            </span>
+            <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+          </div>
+          <h2
+            className="text-3xl md:text-4xl font-bold text-[#111111] tracking-tight leading-[1.15]"
+            style={{ fontFamily: NM }}
+          >
+            Start earning in four simple steps
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 relative">
           {/* Connector Line (Desktop) */}
-          <div className="hidden md:block absolute top-12 left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-[#F8E7E7] via-[#7A1D1B]/20 to-[#F8E7E7] -z-10" />
-          
+          <div className="hidden md:block absolute top-[28px] left-[15%] right-[15%] h-[1px] bg-neutral-200 -z-10" />
+
           {steps.map((step, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="flex flex-col items-center"
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              className="flex flex-col relative"
             >
-              <div className="w-24 h-24 bg-white rounded-full shadow-sm flex items-center justify-center text-2xl font-bold text-[#7A1D1B] border-[4px] border-[#F8E7E7] mb-6 relative z-10">
-                {idx + 1}
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-neutral-100 flex items-center justify-center text-[18px] font-bold text-[#7A1D1B] mb-6 mx-auto md:mx-0 relative z-10">
+                0{idx + 1}
               </div>
-              <h3 className="text-xl font-bold text-[#171717] mb-2">{step.title}</h3>
-              <p className="text-[#525252] font-medium">{step.desc}</p>
+              <div className="text-center md:text-left">
+                <h3 className="text-[18px] font-bold text-[#111111] mb-2">{step.title}</h3>
+                <p className="text-[15px] text-[#666666] leading-relaxed">{step.desc}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -225,40 +300,58 @@ export function PartnerHowItWorks() {
 
 export function PartnerOutcomes() {
   const outcomes = [
-    "Access to hundreds of routes",
-    "Instant ticket generation",
-    "Automatic commission tracking",
-    "Customer booking history",
-    "Digital manifests",
-    "Wallet & settlements",
-    "Dedicated support"
+    { title: "Live Inventory", desc: "Access hundreds of routes instantly." },
+    { title: "Instant Tickets", desc: "Generate tickets without calling operators." },
+    { title: "Auto Commission", desc: "Commission tracked on every sale." },
+    { title: "Booking History", desc: "Complete records of all customers." },
+    { title: "Digital Manifests", desc: "Manage passengers easily." },
+    { title: "Quick Settlements", desc: "Fast payouts to your bank account." }
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-white">
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8">
-        <div className="text-center mb-16">
-          <h2 
-            className="text-3xl md:text-4xl font-bold text-[#171717] mb-6"
-            style={{ fontFamily: NM }}
-          >
-            What you&apos;ll get
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {outcomes.map((outcome, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
-              className="bg-[#FAF7F2] px-6 py-5 rounded-2xl flex items-center gap-4 border border-[#E8DDCC]"
+    <section className="py-10 lg:py-16 bg-white border-t border-neutral-100">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
+
+          <div className="lg:w-1/3">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-px w-8 flex-shrink-0 bg-[#C99A4A]" />
+              <span className="text-[12px] font-medium tracking-wide text-[#7A1D1B] uppercase">
+                What you'll get
+              </span>
+            </div>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-[#111111] mb-6 tracking-tight leading-[1.15]"
+              style={{ fontFamily: NM }}
             >
-              <div className="w-2 h-2 rounded-full bg-[#7A1D1B]" />
-              <span className="text-[#404040] font-semibold">{outcome}</span>
-            </motion.div>
-          ))}
+              Everything you need to succeed
+            </h2>
+            <p className="text-[16px] text-[#666666] leading-relaxed mb-8">
+              We provide a complete digital toolkit designed specifically for agents, giving you full control over your bookings, customers, and revenue.
+            </p>
+          </div>
+
+          <div className="lg:w-2/3 w-full grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            {outcomes.map((outcome, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05, duration: 0.4 }}
+                className="flex items-start gap-4 p-5 rounded-2xl hover:bg-[#FAFAFA] border border-transparent hover:border-neutral-100 transition-colors"
+              >
+                <div className="mt-1 shrink-0 bg-[#FDF4F4] text-[#7A1D1B] w-8 h-8 rounded-full flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#111111] text-[16px] mb-1">{outcome.title}</h3>
+                  <p className="text-[14px] text-[#666666] leading-relaxed">{outcome.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>
@@ -274,10 +367,10 @@ export function PartnerComparison() {
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-[#FAFAFA]">
+    <section className="py-10 lg:py-16 bg-[#FAFAFA]">
       <div className="max-w-[1000px] mx-auto px-4 md:px-8">
-        <div className="text-center mb-16">
-          <h2 
+        <div className="text-center mb-10 lg:mb-12">
+          <h2
             className="text-3xl md:text-4xl font-bold text-[#171717] mb-6"
             style={{ fontFamily: NM }}
           >
@@ -316,32 +409,36 @@ export function PartnerComparison() {
 }
 
 export function PartnerFAQ() {
+  const [openId, setOpenId] = useState<number | null>(null);
+
   const faqs = [
-    { q: "Can I sell tickets immediately?", a: "Yes, once your registration is approved (usually within 24 hours), you can start booking tickets instantly." },
-    { q: "How do I receive commission?", a: "Commissions are automatically tracked and settled directly into your connected bank account or digital wallet." },
-    { q: "Do I need a shop?", a: "No, a physical shop is not required. You can operate entirely from a smartphone or computer from anywhere." },
-    { q: "Can I work from home?", a: "Absolutely. Our platform is fully digital, meaning you can manage your bookings and customers from the comfort of your home." },
-    { q: "What happens if customers cancel?", a: "Cancellations follow the specific operator's policy. The process is handled smoothly within your dashboard." },
-    { q: "How do refunds work?", a: "Refunds are processed automatically and returned to the customer's original payment method or wallet based on the policy." }
+    { id: 1, question: "Can I sell tickets immediately?", answer: "Yes, once your registration is approved (usually within 24 hours), you can start booking tickets instantly." },
+    { id: 2, question: "How do I receive commission?", answer: "Commissions are automatically tracked and settled directly into your connected bank account or digital wallet." },
+    { id: 3, question: "Do I need a shop?", answer: "No, a physical shop is not required. You can operate entirely from a smartphone or computer from anywhere." },
+    { id: 4, question: "Can I work from home?", answer: "Absolutely. Our platform is fully digital, meaning you can manage your bookings and customers from the comfort of your home." },
+    { id: 5, question: "What happens if customers cancel?", answer: "Cancellations follow the specific operator's policy. The process is handled smoothly within your dashboard." },
+    { id: 6, question: "How do refunds work?", answer: "Refunds are processed automatically and returned to the customer's original payment method or wallet based on the policy." }
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-white">
+    <section className="py-10 lg:py-16 bg-white">
       <div className="max-w-[800px] mx-auto px-4 md:px-8">
-        <div className="text-center mb-16">
-          <h2 
+        <div className="text-center mb-10 lg:mb-12">
+          <h2
             className="text-3xl md:text-4xl font-bold text-[#171717] mb-6"
             style={{ fontFamily: NM }}
           >
             Frequently Asked Questions
           </h2>
         </div>
-        <div className="space-y-6">
-          {faqs.map((faq, idx) => (
-            <div key={idx} className="bg-[#FAF7F2] rounded-2xl p-6 border border-[#E8DDCC]">
-              <h3 className="text-lg font-bold text-[#171717] mb-3">{faq.q}</h3>
-              <p className="text-[#525252] leading-relaxed">{faq.a}</p>
-            </div>
+        <div className="flex flex-col gap-3">
+          {faqs.map((faq) => (
+            <FAQItem
+              key={faq.id}
+              item={faq}
+              isOpen={openId === faq.id}
+              onToggle={() => setOpenId(openId === faq.id ? null : faq.id)}
+            />
           ))}
         </div>
       </div>
@@ -351,24 +448,38 @@ export function PartnerFAQ() {
 
 export function PartnerCTA() {
   return (
-    <section className="py-24 md:py-32 bg-[#171717] text-center px-4 relative overflow-hidden">
-      {/* Decorative patterns */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#7A1D1B]/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#C99A4A]/10 rounded-full blur-[100px] pointer-events-none" />
-
+    <section className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-br from-[#F5F9FF] via-white to-[#FEFBF5] text-center px-4">
       <div className="max-w-2xl mx-auto relative z-10">
-        <h2 
-          className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight"
+        <h2
+          className="text-4xl md:text-5xl font-bold text-[#111111] mb-8 tracking-tight"
           style={{ fontFamily: NM }}
         >
           Ready to start selling bus tickets?
         </h2>
-        <Link
-          href="/register"
-          className="inline-flex items-center justify-center gap-2 h-14 px-10 bg-[#7A1D1B] text-white rounded-xl font-semibold text-[16px] hover:bg-[#641715] transition-colors w-full sm:w-auto"
-        >
-          Become a ShuvMarg Partner
-        </Link>
+        <div className="relative inline-block">
+          {/* Decorative lines around button */}
+          <div className="absolute -top-6 -left-6 opacity-60">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4L4 20" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M22 10L10 22" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M14 2L2 14" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </div>
+          <div className="absolute -bottom-6 -right-6 opacity-60">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4L20 20" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M2 10L14 22" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M10 2L22 14" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </div>
+          <Link
+            href="/register"
+            className="relative z-10 inline-flex items-center justify-center h-14 px-10 bg-[#D96B62] hover:bg-[#B83D35] text-white text-lg font-medium rounded-2xl transition-all shadow-[0_8px_24px_rgba(217,107,98,0.3)] hover:shadow-[0_12px_32px_rgba(217,107,98,0.4)] hover:-translate-y-0.5"
+          >
+            Sign Up for free
+            <MoveRight className="ml-2 w-5 h-5" strokeWidth={2.5} />
+          </Link>
+        </div>
       </div>
     </section>
   );

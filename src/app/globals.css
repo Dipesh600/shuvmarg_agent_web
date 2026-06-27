@@ -86,6 +86,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
   line-height: 1.6;
+  user-select: none;
 }
 
 /* Neue Machina for all headings — editorial, distinctive */

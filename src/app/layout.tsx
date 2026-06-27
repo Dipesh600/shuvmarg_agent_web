@@ -48,7 +48,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col select-none">
         <SmoothScrollProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
