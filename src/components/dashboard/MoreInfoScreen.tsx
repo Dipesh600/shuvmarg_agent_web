@@ -29,13 +29,18 @@ export function MoreInfoScreen({ moreInfoRequest, moreInfoRequestedAt, onEditApp
   return (
     <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-10">
-          <span className="font-black text-[22px] tracking-tighter">
-            <span className="text-[#111111]">Shuv</span>
-            <span className="text-[#7A1D1B]">marg</span>
-            <span className="text-neutral-400 font-normal text-[13px] ml-1">Partner</span>
-          </span>
+        {/* Standard Logo */}
+        <div className="flex justify-center mb-10">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#7A1D1B]/5 border border-[#7A1D1B]/10">
+              <span className="material-symbols-rounded text-[18px] text-[#7A1D1B]">directions_bus</span>
+            </div>
+            <span className="font-black text-[22px] tracking-tighter flex items-baseline">
+              <span className="text-[#111111]" style={{ fontFamily: 'var(--font-manrope)' }}>Shuv</span>
+              <span className="text-[#D96B62]" style={{ fontFamily: 'var(--font-display)' }}>marg</span>
+              <span className="text-neutral-500 font-medium text-[13px] ml-2 tracking-normal bg-neutral-100 px-2 py-0.5 rounded-md">Partner</span>
+            </span>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.08)] p-8">

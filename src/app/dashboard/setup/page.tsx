@@ -324,8 +324,8 @@ export default function SetupPage() {
         return;
       }
 
-      // 4. Success → redirect to dashboard (which will show PendingScreen)
-      router.replace("/dashboard");
+      // 4. Success → redirect to dashboard (hard reload to fetch new status)
+      window.location.href = "/dashboard";
     } catch (err: unknown) {
       setStepError("Something went wrong. Please try again.");
       setSubmitting(false);
