@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { isLoggedIn, logout } from "@/lib/auth";
 import { getApplicationStatus, ApplicationStatusData } from "@/lib/agentApi";
 import { store } from "@/lib/store";
@@ -18,6 +18,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [status, setStatus] = useState<ApplicationStatusData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -67,12 +68,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // ── DRAFT: redirect to setup ──────────────────────────────────────────────
   if (!status?.applicationStatus || status.applicationStatus === "DRAFT") {
-    if (typeof window !== "undefined") {
-      const path = window.location.pathname;
-      if (!path.startsWith("/dashboard/setup")) {
-        router.replace("/dashboard/setup");
-        return null;
-      }
+    if (!pathname.startsWith("/dashboard/setup")) {
+      router.replace("/dashboard/setup");
+      return null;
     }
     // Inside setup — render children normally
     return <>{children}</>;
