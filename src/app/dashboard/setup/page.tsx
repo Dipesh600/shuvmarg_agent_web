@@ -353,13 +353,20 @@ export default function SetupPage() {
     <div className="min-h-screen bg-[#FAF7F2]">
       {/* Top bar */}
       <div className="sticky top-0 z-10 bg-[#FAF7F2]/95 backdrop-blur border-b border-neutral-200/60">
-        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="font-black text-[18px] tracking-tighter">
-            <span className="text-[#111111]">Shuv</span>
-            <span className="text-[#7A1D1B]">marg</span>
-            <span className="text-neutral-400 font-normal text-[12px] ml-1">Partner Setup</span>
-          </span>
-          <button onClick={handleLogout} className="text-[13px] text-neutral-400 hover:text-neutral-600 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center justify-between">
+          {/* Standard Logo */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#7A1D1B]/5 border border-[#7A1D1B]/10">
+              <span className="material-symbols-rounded text-[18px] text-[#7A1D1B]">directions_bus</span>
+            </div>
+            <span className="font-black text-[22px] tracking-tighter flex items-baseline">
+              <span className="text-[#111111]" style={{ fontFamily: 'var(--font-manrope)' }}>Shuv</span>
+              <span className="text-[#D96B62]" style={{ fontFamily: 'var(--font-display)' }}>marg</span>
+              <span className="text-neutral-500 font-medium text-[13px] ml-2 tracking-normal bg-neutral-100 px-2 py-0.5 rounded-md">Partner Setup</span>
+            </span>
+          </div>
+          
+          <button onClick={handleLogout} className="text-[13px] font-medium text-neutral-500 hover:text-neutral-900 transition-colors">
             Sign out
           </button>
         </div>
