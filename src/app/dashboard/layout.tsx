@@ -11,7 +11,7 @@ import { PendingScreen } from "@/components/dashboard/PendingScreen";
 import { RejectedScreen } from "@/components/dashboard/RejectedScreen";
 import { SuspendedScreen } from "@/components/dashboard/SuspendedScreen";
 import { MoreInfoScreen } from "@/components/dashboard/MoreInfoScreen";
-
+import WorkspaceLayout from "@/components/layout/WorkspaceLayout";
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -113,5 +113,5 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   // ── APPROVED: render the actual dashboard ─────────────────────────────────
-  return <>{children}</>;
+  return <WorkspaceLayout>{children}</WorkspaceLayout>;
 }

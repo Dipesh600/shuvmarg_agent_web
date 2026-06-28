@@ -33,8 +33,14 @@ const footerCols = [
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname === "/register" || pathname === "/login" || pathname === "/forgot-password") return null;
-
+  if (
+    pathname === "/register" ||
+    pathname === "/login" ||
+    pathname === "/forgot-password" ||
+    pathname.startsWith("/dashboard")
+  ) {
+    return null;
+  }
   return (
     <>
       {/* Inline style for footer link hover */}
