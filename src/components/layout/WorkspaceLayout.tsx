@@ -6,7 +6,7 @@ export default function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen bg-white overflow-hidden flex flex-col">
+    <div className="h-screen bg-[#FAF7F2] overflow-hidden flex flex-col">
       <WorkspaceNav />
       {/* 
         Main content area adjusts based on the fixed navigation size
