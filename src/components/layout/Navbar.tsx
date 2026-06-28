@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useOnboardingStore } from "@/lib/store";
-import { isLoggedIn } from "@/lib/auth";
-
+import { useOnboardingStore, useGlobalStore } from "@/lib/store";
+import { isLoggedIn, logout } from "@/lib/auth";
 
 const dashboardNavItems = [
   { label: "Overview", href: "/dashboard", icon: "dashboard" },
@@ -21,9 +20,12 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
 
   const pathname = usePathname();
+  const router = useRouter();
   const { onboardingStep, onboardingTitle } = useOnboardingStore();
+  const { agentProfile } = useGlobalStore();
 
   const isDashboard = pathname?.startsWith("/dashboard");
   const isOnboarding = pathname === "/onboarding";
@@ -45,8 +47,11 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+  // Close mobile/avatar menu on route change
+  useEffect(() => { 
+    setMobileMenuOpen(false);
+    setAvatarMenuOpen(false);
+  }, [pathname]);
 
   // Lock body scroll when mobile menu open
   useEffect(() => {
@@ -135,8 +140,8 @@ export default function Navbar() {
                             : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
                             }`}
                         >
-                          <span className="material-symbols-rounded mr-1.5 text-[18px]">group_add</span>
-                          Become an Agent
+                          <span className="material-symbols-rounded mr-1.5 text-[18px]">{item.icon}</span>
+                          {item.label}
                         </Link>
                       );
                     })}
@@ -216,16 +221,47 @@ export default function Navbar() {
                     animate={{ opacity: 1 }}
                     className="flex items-center gap-2"
                   >
-                    {/* Operator name — sm+ only */}
+                    {/* Operator name / Stats — sm+ only */}
                     <div className="hidden sm:flex items-center gap-4 mr-2">
-                      <Link href="/platform" className="text-[14px] font-semibold text-neutral-600 hover:text-maroon transition-colors">Platform</Link>
-                      <Link href="/commission" className="text-[14px] font-semibold text-neutral-600 hover:text-maroon transition-colors">Commission</Link>
-                      <Link href="/agents" className="text-[14px] font-semibold text-neutral-600 hover:text-maroon transition-colors">Agent Network</Link>
-                      <Link href="/support" className="text-[14px] font-semibold text-neutral-600 hover:text-maroon transition-colors">Support</Link>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[13px] font-bold text-neutral-900 leading-tight">{agentProfile?.name || "Shuvmarg Partner"}</span>
+                        <span className="text-[11px] font-medium text-neutral-500 leading-tight">ID: {agentProfile?.id || "N/A"}</span>
+                      </div>
                     </div>
-                    {/* Avatar */}
-                    <div className="w-8 h-8 rounded-full bg-maroon flex items-center justify-center cursor-pointer hover:bg-maroon-dark transition-colors flex-shrink-0">
-                      <span className="text-white text-[11px] font-bold">ST</span>
+                    {/* Avatar Menu */}
+                    <div className="relative">
+                      <div 
+                        className="w-8 h-8 rounded-full bg-maroon flex items-center justify-center cursor-pointer hover:bg-maroon-dark transition-colors flex-shrink-0"
+                        onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+                      >
+                        <span className="text-white text-[11px] font-bold">{agentProfile?.initials || "ST"}</span>
+                      </div>
+                      
+                      <AnimatePresence>
+                        {avatarMenuOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 4 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute right-0 top-full mt-2 w-48 bg-white border border-neutral-200 rounded-xl shadow-lg overflow-hidden z-50"
+                          >
+                            <div className="p-1">
+                              <button
+                                onClick={async () => {
+                                  setAvatarMenuOpen(false);
+                                  await logout();
+                                  router.push("/login");
+                                }}
+                                className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-neutral-700 hover:text-[#D32F2F] hover:bg-[#FFF4F3] rounded-lg transition-colors"
+                              >
+                                <span className="material-symbols-rounded text-[18px]">logout</span>
+                                Sign out
+                              </button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                     {/* Hamburger — below lg */}
                     <button

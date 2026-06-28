@@ -2,7 +2,8 @@ import { useSyncExternalStore } from "react";
 
 let state = {
   onboardingStep: 0,
-  onboardingTitle: "Operator Profile"
+  onboardingTitle: "Operator Profile",
+  agentProfile: null as { name: string | null; id: string | null; initials: string | null } | null,
 };
 let listeners = new Set<() => void>();
 
@@ -19,5 +20,9 @@ export const store = {
 };
 
 export function useOnboardingStore() {
+  return useSyncExternalStore(store.subscribe, store.getState, store.getState);
+}
+
+export function useGlobalStore() {
   return useSyncExternalStore(store.subscribe, store.getState, store.getState);
 }

@@ -28,12 +28,15 @@ export default function RegisterPage() {
 
   // Step 3 — Account details
   const [name, setName] = useState("");
-  const [companyName, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [detailsError, setDetailsError] = useState("");
+
+  // Upgrade path — existing user registered under another role
+  const [existingRoles, setExistingRoles] = useState<string[]>([]);
+  const isUpgrade = existingRoles.length > 0;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,6 +63,11 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
+        // If they're fully registered as agent, send them to login
+        if (data.errorCode === "ROLE_ALREADY_REGISTERED" && data.hint === "login") {
+          router.push("/login?reason=exists");
+          return;
+        }
         setPhoneError(data.message || "Failed to send OTP. Please try again.");
         return;
       }
@@ -95,6 +103,14 @@ export default function RegisterPage() {
         return;
       }
 
+      // Capture existing roles and pre-fill name for upgrade path
+      if (data.existingRoles?.length > 0) {
+        setExistingRoles(data.existingRoles);
+      }
+      if (data.userName) {
+        setName(data.userName);
+      }
+
       setStep("details");
     } catch {
       setOtpError("Network error. Check your connection and try again.");
@@ -128,6 +144,14 @@ export default function RegisterPage() {
     }
   };
 
+  // Human-readable role label for the upgrade notice
+  const roleLabel = (role: string) => ({
+    busOwner: "Bus Operator",
+    passenger: "Passenger",
+    agent: "Agent",
+    admin: "Admin",
+  }[role] ?? role);
+
   // ── Step 3: Register ────────────────────────────────────────────────────────
   const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,10 +159,6 @@ export default function RegisterPage() {
 
     if (name.trim().length < 3) {
       setDetailsError("Name must be at least 3 characters.");
-      return;
-    }
-    if (companyName.trim().length < 3) {
-      setDetailsError("Company name must be at least 3 characters.");
       return;
     }
     if (password.length < 6) {
@@ -155,18 +175,24 @@ export default function RegisterPage() {
       const res = await fetch(`${API}/auth/agent/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, name: name.trim(), companyName: companyName.trim(), password }),
+        body: JSON.stringify({ phone, name: name.trim(), password }),
       });
       const data = await res.json();
+
+      // If they already have an agent account, redirect to login
+      if (data.errorCode === "AGENT_ALREADY_EXISTS") {
+        router.push("/login?reason=exists");
+        return;
+      }
 
       if (!res.ok) {
         setDetailsError(data.message || "Registration failed. Please try again.");
         return;
       }
 
-      // Store token and redirect to onboarding
+      // Store tokens and go to dashboard — the dashboard will show the setup prompt
       saveTokens(data.accessToken, data.refreshToken);
-      router.push("/onboarding");
+      router.push("/dashboard");
     } catch {
       setDetailsError("Network error. Check your connection and try again.");
     } finally {
@@ -448,6 +474,23 @@ export default function RegisterPage() {
                     onSubmit={handleDetailsSubmit}
                     className="space-y-4 w-full"
                   >
+
+                    {/* Upgrade path notice — phone already registered under another role */}
+                    {isUpgrade && (
+                      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex gap-3 items-start">
+                        <span className="material-symbols-rounded text-amber-500 text-[18px] mt-0.5 flex-shrink-0">info</span>
+                        <div>
+                          <p className="text-[13px] font-semibold text-amber-800">
+                            Phone already registered as {existingRoles.map(roleLabel).join(" & ")}
+                          </p>
+                          <p className="text-[12px] text-amber-700 mt-0.5">
+                            We&apos;ll add Agent access to your existing account.
+                            The password you set below will become your new password for all roles.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Name */}
                     <div className="space-y-1.5">
                       <label className="text-[13px] font-semibold text-neutral-800">Your Full Name</label>
@@ -459,29 +502,18 @@ export default function RegisterPage() {
                           value={name}
                           onChange={(e) => { setName(e.target.value); setDetailsError(""); }}
                           className="flex-1 h-full outline-none text-[15px] text-neutral-900 bg-transparent placeholder:text-neutral-400"
-                          autoFocus
+                          autoFocus={!isUpgrade}
                         />
                       </div>
                     </div>
 
-                    {/* Company Name */}
-                    <div className="space-y-1.5">
-                      <label className="text-[13px] font-semibold text-neutral-800">Company / Business Name</label>
-                      <div className="relative flex items-center h-[52px] rounded-xl border border-neutral-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-neutral-300 focus-within:border-[#7A1D1B] focus-within:ring-4 focus-within:ring-[#7A1D1B]/10 overflow-hidden transition-all duration-200 bg-white px-4">
-                        <span className="material-symbols-rounded text-neutral-400 mr-3 text-[20px]">business</span>
-                        <input
-                          type="text"
-                          placeholder="e.g. Himalayan Bus Service Pvt. Ltd."
-                          value={companyName}
-                          onChange={(e) => { setCompanyName(e.target.value); setDetailsError(""); }}
-                          className="flex-1 h-full outline-none text-[15px] text-neutral-900 bg-transparent placeholder:text-neutral-400"
-                        />
-                      </div>
-                    </div>
+                    {/* Company Name removed — now collected in KYC setup inside the dashboard */}
 
                     {/* Password */}
                     <div className="space-y-1.5">
-                      <label className="text-[13px] font-semibold text-neutral-800">Create Password</label>
+                      <label className="text-[13px] font-semibold text-neutral-800">
+                        {isUpgrade ? "Set New Password" : "Create Password"}
+                      </label>
                       <div className="relative flex items-center h-[52px] rounded-xl border border-neutral-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-neutral-300 focus-within:border-[#7A1D1B] focus-within:ring-4 focus-within:ring-[#7A1D1B]/10 overflow-hidden transition-all duration-200 bg-white px-4">
                         <span className="material-symbols-rounded text-neutral-400 mr-3 text-[20px]">lock</span>
                         <input
@@ -545,7 +577,6 @@ export default function RegisterPage() {
                         disabled={
                           isLoading ||
                           name.trim().length < 3 ||
-                          companyName.trim().length < 3 ||
                           password.length < 6 ||
                           password !== confirmPassword
                         }
