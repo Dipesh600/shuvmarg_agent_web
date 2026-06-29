@@ -3,7 +3,7 @@ import { useSyncExternalStore } from "react";
 let state = {
   onboardingStep: 0,
   onboardingTitle: "Operator Profile",
-  agentProfile: null as { name: string | null; id: string | null; initials: string | null } | null,
+  agentProfile: null as { name: string | null; id: string | null; initials: string | null; avatar?: string | null } | null,
 };
 let listeners = new Set<() => void>();
 

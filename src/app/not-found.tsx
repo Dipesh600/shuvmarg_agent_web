@@ -61,10 +61,10 @@ export default function NotFound() {
             className="mt-8"
           >
             <Link
-              href="/"
+              href="/dashboard"
               className="inline-flex items-center gap-2 bg-[#7A1D1B] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#5C1414] transition-colors shadow-lg shadow-[#7A1D1B]/20"
             >
-              Go to Home
+              Go to Dashboard
               <MoveRight className="w-5 h-5" />
             </Link>
           </motion.div>

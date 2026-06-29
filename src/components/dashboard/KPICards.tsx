@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TrendingUp, TrendingDown, Wallet, Clock, Ticket, Banknote } from "lucide-react";
 
 const kpiData = [
   {
     id: 1,
-    title: "Today's Sales",
+    title: "Your Bookings Today",
     value: "42",
     unit: "Total Tickets Sold",
     change: "12.5%",
@@ -16,7 +16,7 @@ const kpiData = [
   },
   {
     id: 2,
-    title: "Today's Earnings",
+    title: "Your Earnings Today",
     value: "NPR 35,400",
     change: "8.2%",
     changeType: "positive",
@@ -25,7 +25,7 @@ const kpiData = [
   },
   {
     id: 3,
-    title: "Wallet Balance",
+    title: "Your Wallet Balance",
     value: "NPR 145,000",
     change: "2.4%",
     changeType: "positive",
@@ -34,7 +34,7 @@ const kpiData = [
   },
   {
     id: 4,
-    title: "Pending Settlement",
+    title: "Your Pending Settlements",
     value: "NPR 12,500",
     change: "4.1%",
     changeType: "negative",
@@ -44,7 +44,77 @@ const kpiData = [
 ];
 
 export default function KPICards() {
-  const [hoveredId, setHoveredId] = useState(1);
+  const [activeId, setActiveId] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Intersection observer for scroll tracking on mobile
+  useEffect(() => {
+    if (!isMobile || !containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = Number(entry.target.getAttribute('data-id'));
+            if (id) setActiveId(id);
+          }
+        });
+      },
+      {
+        root: containerRef.current,
+        threshold: 0.6,
+      }
+    );
+
+    const cards = containerRef.current.querySelectorAll('.kpi-card');
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  // Auto-play on mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    let userInteracted = false;
+
+    const interval = setInterval(() => {
+      if (userInteracted) return;
+
+      setActiveId((currentId) => {
+        const nextId = currentId >= kpiData.length ? 1 : currentId + 1;
+        const container = containerRef.current;
+        const nextCard = container?.querySelector(`[data-id="${nextId}"]`) as HTMLElement | null;
+
+        if (container && nextCard) {
+          // Only scroll the horizontal card strip — NOT the whole page
+          const cardLeft = nextCard.offsetLeft;
+          container.scrollTo({ left: cardLeft, behavior: 'smooth' });
+        }
+
+        return nextId;
+      });
+    }, 3500);
+
+    // Stop auto-play permanently if user touches the card strip
+    const handleTouch = () => { userInteracted = true; clearInterval(interval); };
+    const container = containerRef.current;
+    container?.addEventListener('touchstart', handleTouch, { passive: true });
+
+    return () => {
+      clearInterval(interval);
+      container?.removeEventListener('touchstart', handleTouch);
+    };
+  }, [isMobile]);
 
   return (
     <>
@@ -57,22 +127,32 @@ export default function KPICards() {
         .animate-liquid-wave {
           animation: liquid-wave 4s linear infinite;
         }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}} />
 
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-        onMouseLeave={() => setHoveredId(1)}
+        ref={containerRef}
+        className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-2 md:grid md:grid-cols-2 md:overflow-visible md:pb-0"
+        style={{ touchAction: 'pan-x' }}
+        onMouseLeave={() => { if (!isMobile) setActiveId(1) }}
       >
         {kpiData.map((kpi) => {
           const Icon = kpi.icon;
           const isPositive = kpi.changeType === "positive";
-          const isActive = hoveredId === kpi.id;
+          const isActive = activeId === kpi.id;
 
           return (
             <div
               key={kpi.id}
-              onMouseEnter={() => setHoveredId(kpi.id)}
-              className="relative overflow-hidden rounded-2xl p-5 flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-neutral-100 bg-white cursor-default group h-[160px]"
+              data-id={kpi.id}
+              onMouseEnter={() => { if (!isMobile) setActiveId(kpi.id) }}
+              className="kpi-card relative overflow-hidden rounded-2xl p-5 flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-neutral-100 bg-white cursor-default group h-[160px] flex-shrink-0 w-[85%] snap-start md:w-auto md:snap-align-none"
             >
               {/* Liquid Wave Fill Animation */}
               <div
@@ -113,7 +193,7 @@ export default function KPICards() {
                   />
                 </div>
                 <p
-                  className={`text-[13px] font-semibold transition-colors duration-500 ${isActive ? "text-white/95" : "text-neutral-600"
+                  className={`text-[16px] font-semibold transition-colors duration-500 ${isActive ? "text-white/95" : "text-neutral-600"
                     }`}
                 >
                   {kpi.title}
@@ -148,7 +228,7 @@ export default function KPICards() {
                   )}
                   {kpi.change}
                 </span>
-                <span className="text-[12px] font-medium text-white/80 transition-colors duration-500">
+                <span className={`text-[12px] font-medium transition-colors duration-500 ${isActive ? "text-white/80" : "text-[#7A1D1B]/80"}`}>
                   {kpi.period}
                 </span>
               </div>

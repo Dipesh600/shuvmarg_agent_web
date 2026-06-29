@@ -42,7 +42,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         agentProfile: {
           name: data.userName || data.business?.businessName || "Agent",
           id: data.agentId || "Draft",
-          initials: (data.userName || data.business?.businessName || "Agent").substring(0, 2).toUpperCase()
+          initials: (data.userName || data.business?.businessName || "Agent").substring(0, 2).toUpperCase(),
+          avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Saurav&backgroundColor=F8F1E3"
         }
       });
     }

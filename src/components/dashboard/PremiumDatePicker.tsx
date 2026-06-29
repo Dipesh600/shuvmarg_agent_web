@@ -6,9 +6,11 @@ import { Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from
 export default function PremiumDatePicker({
   selectedDate,
   onDateChange,
+  variant = "desktop",
 }: {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
+  variant?: "desktop" | "mobile";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
@@ -70,26 +72,41 @@ export default function PremiumDatePicker({
   return (
     <div className="relative self-start sm:self-auto" ref={popoverRef}>
       {/* Trigger Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-neutral-200 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:bg-neutral-50 transition-colors group"
-      >
-        <CalendarIcon
-          className="w-4 h-4 text-neutral-500 group-hover:text-neutral-700 transition-colors"
-          strokeWidth={2.5}
-        />
-        <span className="text-[14px] font-semibold text-neutral-700 font-display tracking-wide">
-          {displayStr}
-        </span>
-        <ChevronDown
-          className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-transform duration-200 ml-1 ${isOpen ? "rotate-180" : ""}`}
-          strokeWidth={2.5}
-        />
-      </button>
+      {variant === "mobile" ? (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-1.5 text-white/90 hover:text-white transition-colors group"
+        >
+          <span className="text-[14px] font-medium font-sans">
+            {displayStr}
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 opacity-70 group-hover:opacity-100 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            strokeWidth={2.5}
+          />
+        </button>
+      ) : (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2 px-4 py-2.5 bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-white/60 transition-all group"
+        >
+          <CalendarIcon
+            className="w-4 h-4 text-neutral-500 group-hover:text-neutral-700 transition-colors"
+            strokeWidth={2.5}
+          />
+          <span className="text-[14px] font-semibold text-neutral-700 font-display tracking-wide">
+            {displayStr}
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-transform duration-200 ml-1 ${isOpen ? "rotate-180" : ""}`}
+            strokeWidth={2.5}
+          />
+        </button>
+      )}
 
       {/* Popover Calendar */}
       {isOpen && (
-        <div className="absolute right-0 top-[calc(100%+8px)] w-[320px] bg-white border border-neutral-100 rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] z-50 overflow-hidden transform origin-top-right">
+        <div className="absolute left-0 sm:left-auto sm:right-0 top-[calc(100%+8px)] w-[320px] bg-white border border-neutral-100 rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] z-50 overflow-hidden transform origin-top-left sm:origin-top-right">
           <div className="p-5">
             {/* Calendar Header */}
             <div className="flex items-center justify-between mb-5">

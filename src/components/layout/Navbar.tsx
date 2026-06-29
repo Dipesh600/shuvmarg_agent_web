@@ -238,10 +238,14 @@ export default function Navbar() {
                     {/* Avatar Menu */}
                     <div className="relative">
                       <div 
-                        className="w-8 h-8 rounded-full bg-maroon flex items-center justify-center cursor-pointer hover:bg-maroon-dark transition-colors flex-shrink-0"
+                        className="w-8 h-8 rounded-full bg-maroon flex items-center justify-center cursor-pointer hover:bg-maroon-dark transition-colors flex-shrink-0 overflow-hidden relative"
                         onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
                       >
-                        <span className="text-white text-[11px] font-bold">{agentProfile?.initials || "ST"}</span>
+                        {agentProfile?.avatar ? (
+                          <img src={agentProfile.avatar} alt={agentProfile.name || "Avatar"} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-white text-[11px] font-bold">{agentProfile?.initials || "ST"}</span>
+                        )}
                       </div>
                       
                       <AnimatePresence>
