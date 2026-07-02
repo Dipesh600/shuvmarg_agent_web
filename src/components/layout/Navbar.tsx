@@ -11,8 +11,7 @@ const dashboardNavItems = [
   { label: "Overview", href: "/dashboard", icon: "dashboard" },
   { label: "Bookings", href: "/dashboard/bookings", icon: "confirmation_number" },
   { label: "Customers", href: "/dashboard/customers", icon: "group" },
-  { label: "Commissions", href: "/dashboard/commissions", icon: "account_balance_wallet" },
-  { label: "Wallet", href: "/dashboard/wallet", icon: "account_balance" },
+  { label: "Earnings", href: "/dashboard/earnings", icon: "account_balance_wallet" },
 ];
 
 export default function Navbar() {

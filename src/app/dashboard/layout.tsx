@@ -36,14 +36,41 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       return;
     }
 
-    // Set global store with name and agent ID for the navbar
+    // Cache full profile in global store — fetched once, read everywhere
     if (data) {
+      const displayName = data.userName || data.business?.businessName || "Agent";
       store.setState({
         agentProfile: {
-          name: data.userName || data.business?.businessName || "Agent",
-          id: data.agentId || "Draft",
-          initials: (data.userName || data.business?.businessName || "Agent").substring(0, 2).toUpperCase(),
-          avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Saurav&backgroundColor=F8F1E3"
+          // Identity
+          name: displayName,
+          id: data.agentId,
+          initials: displayName.substring(0, 2).toUpperCase(),
+          avatar: `https://api.dicebear.com/9.x/notionists/svg?seed=${encodeURIComponent(displayName)}&backgroundColor=F8F1E3`,
+          agentType: data.agentType,
+          // Personal
+          district: data.personal?.district,
+          municipality: data.personal?.municipality,
+          placeName: data.personal?.placeName,
+          // Business
+          businessName: data.business?.businessName,
+          shopAddress: data.business?.shopAddress,
+          operationType: data.business?.operationType,
+          claimedMonthlyVolume: data.business?.claimedMonthlyVolume,
+          currentOperators: data.business?.currentOperators,
+          // Identification
+          citizenshipNumber: data.identification?.citizenshipNumber,
+          nationalIdNumber: data.identification?.nationalIdNumber,
+          panNumber: data.identification?.panNumber,
+          // Documents — store fileKey for proxy URL generation (never expose previewUrl directly)
+          documents: (data.documents || []).map((d: { type: string; fileKey: string; uploadedAt: string; verified: boolean }) => ({
+            type: d.type,
+            fileKey: d.fileKey,
+            uploadedAt: d.uploadedAt,
+            verified: d.verified,
+          })),
+          // Dates
+          submittedAt: data.submittedAt,
+          approvedAt: data.approvedAt,
         }
       });
     }

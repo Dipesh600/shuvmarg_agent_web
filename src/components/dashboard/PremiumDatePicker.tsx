@@ -7,10 +7,12 @@ export default function PremiumDatePicker({
   selectedDate,
   onDateChange,
   variant = "desktop",
+  customTrigger,
 }: {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   variant?: "desktop" | "mobile";
+  customTrigger?: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
@@ -72,7 +74,11 @@ export default function PremiumDatePicker({
   return (
     <div className="relative self-start sm:self-auto" ref={popoverRef}>
       {/* Trigger Button */}
-      {variant === "mobile" ? (
+      {customTrigger ? (
+        <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
+          {customTrigger}
+        </div>
+      ) : variant === "mobile" ? (
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-1.5 text-white/90 hover:text-white transition-colors group"

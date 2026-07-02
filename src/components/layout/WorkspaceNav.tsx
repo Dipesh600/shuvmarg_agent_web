@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import NotificationDropdown from "./NotificationDropdown";
 import { useGlobalStore } from "@/lib/store";
 import { logout } from "@/lib/auth";
 import {
@@ -24,8 +25,7 @@ const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { label: "Bookings", href: "/dashboard/bookings", icon: Ticket },
   { label: "Customers", href: "/dashboard/customers", icon: Users },
-  { label: "Commissions", href: "/dashboard/commissions", icon: Wallet },
-  { label: "Wallet", href: "/dashboard/wallet", icon: CreditCard },
+  { label: "Earnings", href: "/dashboard/earnings", icon: Wallet },
 ];
 
 export default function WorkspaceNav() {
@@ -33,6 +33,7 @@ export default function WorkspaceNav() {
   const router = useRouter();
   const { agentProfile } = useGlobalStore();
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -104,13 +105,25 @@ export default function WorkspaceNav() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3 pr-2 pointer-events-auto">
-          <button className="w-10 h-10 rounded-full hover:bg-neutral-100/50 flex items-center justify-center text-neutral-500 transition-colors">
+          <button 
+            onClick={() => router.push('/dashboard/faq')}
+            className="w-10 h-10 rounded-full hover:bg-neutral-100/50 flex items-center justify-center text-neutral-500 transition-colors"
+          >
             <HelpCircle className="w-[20px] h-[20px]" />
           </button>
-          <button className="w-10 h-10 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-500 transition-colors relative">
-            <Bell className="w-[20px] h-[20px]" />
-            <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-[#D96B62] rounded-full border-2 border-white box-content"></span>
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setNotificationsOpen(!notificationsOpen)}
+              className="notification-toggle-btn w-10 h-10 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-500 transition-colors relative"
+            >
+              <Bell className="w-[20px] h-[20px]" />
+              <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-[#D96B62] rounded-full border-2 border-white box-content"></span>
+            </button>
+            <NotificationDropdown 
+              isOpen={notificationsOpen}
+              onClose={() => setNotificationsOpen(false)}
+            />
+          </div>
         </div>
       </header>
 

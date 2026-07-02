@@ -1,6 +1,5 @@
 import WorkspaceNav from "./WorkspaceNav";
 import { SmoothScrollArea } from "./SmoothScrollProvider";
-import { Plus } from "lucide-react";
 
 export default function WorkspaceLayout({
   children,
@@ -22,11 +21,6 @@ export default function WorkspaceLayout({
         </main>
       </SmoothScrollArea>
 
-      {/* Floating Action Button for New Booking */}
-      <button className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 bg-[#7A1D1B] hover:bg-[#5C1414] text-white rounded-full shadow-[0_8px_32px_rgba(122,29,27,0.3)] hover:shadow-[0_12px_40px_rgba(122,29,27,0.4)] transition-all duration-300 flex items-center justify-center gap-2 px-6 h-[56px] group hover:-translate-y-1">
-        <Plus className="w-5 h-5 transition-transform group-hover:rotate-90 duration-300" strokeWidth={2.5} />
-        <span className="font-sans font-bold text-[15px]">Book Now</span>
-      </button>
     </div>
   );
 }
