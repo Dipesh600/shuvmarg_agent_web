@@ -62,9 +62,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           nationalIdNumber: data.identification?.nationalIdNumber,
           panNumber: data.identification?.panNumber,
           // Documents — store fileKey for proxy URL generation (never expose previewUrl directly)
-          documents: (data.documents || []).map((d: { type: string; fileKey: string; uploadedAt: string; verified: boolean }) => ({
+          documents: (data.documents || []).map((d: { type: string; fileKey?: string; previewUrl?: string; uploadedAt: string; verified: boolean }) => ({
             type: d.type,
-            fileKey: d.fileKey,
+            fileKey: d.fileKey || "",
+            previewUrl: d.previewUrl,
             uploadedAt: d.uploadedAt,
             verified: d.verified,
           })),
