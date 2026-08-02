@@ -38,6 +38,7 @@ export interface ApplicationStatusData {
   documents: Array<{
     type: string;
     previewUrl?: string;
+    fileKey?: string;
     uploadedAt: string;
     verified: boolean;
   }>;
