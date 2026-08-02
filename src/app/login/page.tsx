@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Lock, Eye, EyeOff } from "lucide-react";
 import { saveTokens } from "@/lib/auth";
 
 const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
@@ -60,7 +60,7 @@ function LoginContent() {
       }
 
       // Normal successful login — save tokens and go to dashboard
-      saveTokens(data.accessToken, data.refreshToken);
+      saveTokens(data.accessToken);
       router.push("/dashboard");
     } catch {
       setError("Network error. Check your connection and try again.");
@@ -159,10 +159,13 @@ function LoginContent() {
 
             {/* Header */}
             <div className="w-full mb-10">
-              <h2 className="text-[28px] md:text-[32px] font-bold text-neutral-900 mb-2">
-                Welcome to the Agent Portal
+              <h2 
+                className="text-[36px] md:text-[42px] text-neutral-900 mb-3 leading-[1.15] tracking-tight"
+                style={{ fontFamily: NM, fontWeight: 400 }}
+              >
+                Welcome to the Agent<br/>Portal
               </h2>
-              <p className="text-[15px] text-neutral-500">
+              <p className="text-[16px] text-neutral-400">
                 Manage bookings and track your earnings
               </p>
             </div>
@@ -177,15 +180,14 @@ function LoginContent() {
               >
                 {/* Phone Input */}
                 <div className="space-y-2">
-                  <label className="text-[13px] font-semibold text-neutral-800">
+                  <label className="text-[14px] font-medium text-neutral-900">
                     Mobile Number
                   </label>
                   <div
-                    className="relative flex items-center h-[52px] rounded-xl overflow-hidden transition-all duration-200 bg-white"
-                    style={{ border: "1.5px solid #e5e7eb", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
+                    className="relative flex items-center h-[52px] rounded-2xl border border-neutral-200 overflow-hidden transition-all duration-200 bg-white focus-within:border-[#7A1D1B] focus-within:ring-4 focus-within:ring-[#7A1D1B]/10"
                   >
-                    <div className="h-full px-4 flex items-center justify-center border-r border-neutral-200 bg-neutral-50">
-                      <span className="text-neutral-600 text-[15px] font-medium">+977</span>
+                    <div className="h-full px-4 flex items-center justify-center border-r border-neutral-200 bg-white">
+                      <span className="text-neutral-500 text-[15px]">+977</span>
                     </div>
                     <input
                       type="tel"
@@ -205,18 +207,18 @@ function LoginContent() {
                 {/* Password Input */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-[13px] font-semibold text-neutral-800">
+                    <label className="text-[14px] font-medium text-neutral-900">
                       Password
                     </label>
                     <Link
                       href="/forgot-password"
-                      className="text-[#7A1D1B] text-[13px] hover:underline font-medium"
+                      className="text-[#7A1D1B] text-[14px] hover:underline font-medium"
                     >
                       Forgot Password?
                     </Link>
                   </div>
-                  <div className="relative flex items-center h-[52px] rounded-xl border border-neutral-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-neutral-300 focus-within:border-[#7A1D1B] focus-within:ring-4 focus-within:ring-[#7A1D1B]/10 overflow-hidden transition-all duration-200 bg-white px-4">
-                    <span className="material-symbols-rounded text-neutral-400 mr-3 text-[20px]">lock</span>
+                  <div className="relative flex items-center h-[52px] rounded-2xl border border-neutral-200 hover:border-neutral-300 focus-within:border-[#7A1D1B] focus-within:ring-4 focus-within:ring-[#7A1D1B]/10 overflow-hidden transition-all duration-200 bg-white px-4">
+                    <Lock className="w-5 h-5 text-neutral-400 mr-3" strokeWidth={2} />
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
@@ -234,9 +236,7 @@ function LoginContent() {
                       className="absolute right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none flex items-center justify-center"
                       aria-label={showPassword ? "Hide password" : "Show password"}
                     >
-                      <span className="material-symbols-rounded text-[20px]">
-                        {showPassword ? "visibility_off" : "visibility"}
-                      </span>
+                      {showPassword ? <EyeOff className="w-5 h-5" strokeWidth={2} /> : <Eye className="w-5 h-5" strokeWidth={2} />}
                     </button>
                   </div>
                 </div>
@@ -260,7 +260,7 @@ function LoginContent() {
                 <button
                   type="submit"
                   disabled={isLoading || phone.length < 10 || password.length < 6}
-                  className="w-full h-[52px] rounded-xl text-white font-semibold text-[16px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#9A2622]"
+                  className="w-full h-[52px] rounded-2xl text-white font-medium text-[16px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#9A2622]"
                   style={{ background: "#7A1D1B" }}
                 >
                   {isLoading ? (
@@ -272,12 +272,12 @@ function LoginContent() {
 
                 <div className="relative py-4 flex items-center">
                   <div className="flex-grow border-t border-neutral-200" />
-                  <span className="flex-shrink-0 mx-4 text-neutral-400 text-[13px] bg-white">New to Shuv Marg?</span>
+                  <span className="flex-shrink-0 mx-4 text-neutral-400 text-[14px] bg-white">New to Shuv Marg?</span>
                   <div className="flex-grow border-t border-neutral-200" />
                 </div>
 
-                <p className="text-[14px] text-neutral-500 text-center">
-                  <Link href="/register" className="text-[#7A1D1B] font-semibold hover:underline">
+                <p className="text-[16px] text-center">
+                  <Link href="/register" className="text-[#7A1D1B] font-medium hover:underline">
                     Create an agent account
                   </Link>
                 </p>

@@ -191,7 +191,7 @@ export default function RegisterPage() {
       }
 
       // Store tokens and go to dashboard — the dashboard will show the setup prompt
-      saveTokens(data.accessToken, data.refreshToken);
+      saveTokens(data.accessToken);
       router.push("/dashboard");
     } catch {
       setDetailsError("Network error. Check your connection and try again.");
