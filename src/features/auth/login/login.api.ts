@@ -4,7 +4,7 @@
  * API client helper methods for Agent Login.
  */
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { API_URL } from "@/lib/config";
 
 function cleanPhone(rawPhone: string): string {
   const digits = rawPhone.replace(/\D/g, "");
@@ -29,7 +29,7 @@ export type ApiError = Error & {
 
 export async function loginAgent(phone: string, password: string): Promise<LoginResponse> {
   const normalized = cleanPhone(phone);
-  const res = await fetch(`${API}/auth/agent/login`, {
+  const res = await fetch(`${API_URL}/auth/agent/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: normalized, password }),

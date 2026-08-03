@@ -4,7 +4,7 @@
  * Network API client methods for Agent Portal password reset flow.
  */
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { API_URL } from "@/lib/config";
 
 function cleanPhone(rawPhone: string): string {
   const digits = rawPhone.replace(/\D/g, "");
@@ -26,7 +26,7 @@ export type ApiError = Error & {
 
 export async function requestPasswordReset(phone: string): Promise<ApiResponse> {
   const normalized = cleanPhone(phone);
-  const res = await fetch(`${API}/auth/agent/requestPasswordReset`, {
+  const res = await fetch(`${API_URL}/auth/agent/requestPasswordReset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: normalized }),
@@ -41,7 +41,7 @@ export async function requestPasswordReset(phone: string): Promise<ApiResponse> 
 export async function verifyOtpForReset(phone: string, otp: string): Promise<ApiResponse> {
   const normalized = cleanPhone(phone);
   const cleanOtp = otp.replace(/\D/g, "").slice(0, 6);
-  const res = await fetch(`${API}/auth/agent/verifyOtpForReset`, {
+  const res = await fetch(`${API_URL}/auth/agent/verifyOtpForReset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: normalized, otp: cleanOtp }),
@@ -55,7 +55,7 @@ export async function verifyOtpForReset(phone: string, otp: string): Promise<Api
 
 export async function resendOtpForReset(phone: string): Promise<ApiResponse> {
   const normalized = cleanPhone(phone);
-  const res = await fetch(`${API}/auth/agent/resendOtpForReset`, {
+  const res = await fetch(`${API_URL}/auth/agent/resendOtpForReset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: normalized }),
@@ -74,7 +74,7 @@ export async function resetPassword(
 ): Promise<ApiResponse> {
   const normalized = cleanPhone(phone);
   const cleanOtp = otp.replace(/\D/g, "").slice(0, 6);
-  const res = await fetch(`${API}/auth/agent/resetPassword`, {
+  const res = await fetch(`${API_URL}/auth/agent/resetPassword`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: normalized, otp: cleanOtp, newPassword }),

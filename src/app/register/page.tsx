@@ -7,6 +7,7 @@ import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
 import { saveTokens } from "@/lib/auth";
+import { API_URL } from "@/lib/config";
 import {
   extractVerificationToken,
   buildRegistrationPayload,
@@ -17,7 +18,6 @@ import {
 type Step = "phone" | "otp" | "details";
 
 const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
-const API = process.env.NEXT_PUBLIC_API_URL; // e.g. http://localhost:5000
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -66,7 +66,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/sendOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/sendOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
@@ -102,7 +102,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/verifyOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/verifyOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, otp }),
@@ -144,7 +144,7 @@ export default function RegisterPage() {
     setVerificationToken(""); // Explicit token clear on OTP resend
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/resendOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/resendOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
@@ -192,7 +192,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       const payload = buildRegistrationPayload(phone, name, password, verificationToken);
-      const res = await fetch(`${API}/auth/agent/register`, {
+      const res = await fetch(`${API_URL}/auth/agent/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
