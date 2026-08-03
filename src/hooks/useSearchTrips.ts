@@ -3,7 +3,10 @@
 import { useState, useCallback } from "react";
 import { SearchParams, SearchResponse, TripResult } from "@/types/search";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7012/api";
+// NEXT_PUBLIC_API_URL must be set in the deployment environment.
+// No silent fallback — a missing variable in a staged/production build
+// will fail at the first network call rather than silently hitting localhost.
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface UseSearchTripsReturn {
   results: TripResult[];
