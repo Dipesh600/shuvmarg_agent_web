@@ -7,11 +7,17 @@ import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
 import { saveTokens } from "@/lib/auth";
+import { API_URL } from "@/lib/config";
+import {
+  extractVerificationToken,
+  buildRegistrationPayload,
+  isRegistrationVerificationError,
+  getRegistrationRecoveryState,
+} from "@/features/auth/registration/registration-continuation";
 
 type Step = "phone" | "otp" | "details";
 
 const NM = '"Neue Machina", system-ui, -apple-system, sans-serif';
-const API = process.env.NEXT_PUBLIC_API_URL; // e.g. http://localhost:5000
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -38,6 +44,10 @@ export default function RegisterPage() {
   const [existingRoles, setExistingRoles] = useState<string[]>([]);
   const isUpgrade = existingRoles.length > 0;
 
+  // Step 2 → Step 3 continuation proof — returned flat on the verifyOTP response body.
+  // Must be forwarded to /register as req.body.verificationToken (canonical contract).
+  const [verificationToken, setVerificationToken] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Resend countdown
@@ -51,11 +61,12 @@ export default function RegisterPage() {
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPhoneError("");
+    setVerificationToken(""); // Explicit token clear on new phone submission
     if (phone.length < 10) return;
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/sendOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/sendOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
@@ -91,7 +102,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/verifyOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/verifyOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, otp }),
@@ -102,6 +113,13 @@ export default function RegisterPage() {
         setOtpError(data.message || "Invalid or expired code. Please try again.");
         return;
       }
+
+      const token = extractVerificationToken(data);
+      if (!token) {
+        setOtpError("Verification failed. Please try again.");
+        return;
+      }
+      setVerificationToken(token);
 
       // Capture existing roles and pre-fill name for upgrade path
       if (data.existingRoles?.length > 0) {
@@ -123,9 +141,10 @@ export default function RegisterPage() {
   const handleResendOtp = async () => {
     if (resendTimer > 0) return;
     setOtpError("");
+    setVerificationToken(""); // Explicit token clear on OTP resend
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/resendOTP`, {
+      const res = await fetch(`${API_URL}/auth/agent/resendOTP`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
@@ -172,25 +191,42 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${API}/auth/agent/register`, {
+      const payload = buildRegistrationPayload(phone, name, password, verificationToken);
+      const res = await fetch(`${API_URL}/auth/agent/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, name: name.trim(), password }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
 
       // If they already have an agent account, redirect to login
       if (data.errorCode === "AGENT_ALREADY_EXISTS") {
+        setVerificationToken("");
         router.push("/login?reason=exists");
         return;
       }
 
       if (!res.ok) {
+        // Narrow recovery check: only reset flow if error is a known verification-session failure
+        if (isRegistrationVerificationError(res.status, data.message)) {
+          const recovery = getRegistrationRecoveryState();
+          setVerificationToken("");
+          setOtp("");
+          setStep(recovery.step);
+          setOtpError(recovery.otpError);
+          return;
+        }
         setDetailsError(data.message || "Registration failed. Please try again.");
         return;
       }
 
-      // Store tokens and go to dashboard — the dashboard will show the setup prompt
+      // Store tokens and clear sensitive state
+      setVerificationToken("");
+      setPhone("");
+      setOtp("");
+      setPassword("");
+      setConfirmPassword("");
+
       saveTokens(data.accessToken);
       router.push("/dashboard");
     } catch {
@@ -198,6 +234,21 @@ export default function RegisterPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleChangeNumber = () => {
+    setVerificationToken("");
+    setOtp("");
+    setOtpError("");
+    setDetailsError("");
+    setStep("phone");
+  };
+
+  const handleReturnToOtp = () => {
+    setVerificationToken("");
+    setOtp("");
+    setDetailsError("");
+    setStep("otp");
   };
 
   return (
@@ -221,8 +272,8 @@ export default function RegisterPage() {
           <div className="relative z-10">
             <button
               onClick={() => {
-                if (step === "otp") { setStep("phone"); setOtpError(""); }
-                else if (step === "details") { setStep("otp"); setDetailsError(""); }
+                if (step === "otp") handleChangeNumber();
+                else if (step === "details") handleReturnToOtp();
                 else router.back();
               }}
               className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10"
@@ -273,8 +324,8 @@ export default function RegisterPage() {
           <div className="lg:hidden absolute top-6 left-6 z-10">
             <button
               onClick={() => {
-                if (step === "otp") { setStep("phone"); setOtpError(""); }
-                else if (step === "details") { setStep("otp"); setDetailsError(""); }
+                if (step === "otp") handleChangeNumber();
+                else if (step === "details") handleReturnToOtp();
                 else router.back();
               }}
               className="inline-flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-colors"
@@ -401,7 +452,7 @@ export default function RegisterPage() {
                         <label className="text-[13px] font-semibold text-neutral-800">6-Digit OTP</label>
                         <button
                           type="button"
-                          onClick={() => { setStep("phone"); setOtp(""); setOtpError(""); }}
+                          onClick={handleChangeNumber}
                           className="text-[#7A1D1B] text-[13px] hover:underline font-medium"
                         >
                           Change Number
