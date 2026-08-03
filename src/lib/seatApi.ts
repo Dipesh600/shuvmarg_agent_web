@@ -8,7 +8,7 @@
 import { authFetch } from "./auth";
 import { SeatConfig } from "@/components/dashboard/bookings/PassengerSeatMap";
 
-const API = process.env.NEXT_PUBLIC_API_URL!;
+import { API_URL as API } from "./config";
 
 // ── Backend response shapes ──────────────────────────────────────────────────
 

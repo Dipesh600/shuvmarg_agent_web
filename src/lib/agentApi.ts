@@ -7,7 +7,7 @@
 
 import { authFetch, getAccessToken, clearTokens } from "./auth";
 
-const API = process.env.NEXT_PUBLIC_API_URL!;
+import { API_URL as API } from "./config";
 
 export interface ApplicationStatusData {
   hasApplication: boolean;

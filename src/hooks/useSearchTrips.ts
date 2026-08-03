@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { SearchParams, SearchResponse, TripResult } from "@/types/search";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7012/api";
+import { API_URL } from "@/lib/config";
 
 interface UseSearchTripsReturn {
   results: TripResult[];
