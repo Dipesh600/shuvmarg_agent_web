@@ -4,7 +4,7 @@
  * API client helper methods for Agent Login.
  */
 
-import { API_URL } from "@/lib/config";
+import { API_URL } from "../../../lib/config.ts";
 
 function cleanPhone(rawPhone: string): string {
   const digits = rawPhone.replace(/\D/g, "");

@@ -4,7 +4,7 @@
  * Network API client methods for Agent Portal password reset flow.
  */
 
-import { API_URL } from "@/lib/config";
+import { API_URL } from "../../../lib/config.ts";
 
 function cleanPhone(rawPhone: string): string {
   const digits = rawPhone.replace(/\D/g, "");
